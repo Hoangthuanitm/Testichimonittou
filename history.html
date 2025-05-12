@@ -11,6 +11,7 @@
             margin: 0;
             padding: 0;
             background-color: #F9FAFB;
+            overflow-x: hidden; /* Prevent unwanted horizontal scrolling */
         }
 
         header {
@@ -27,9 +28,10 @@
         }
 
         main {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 2rem auto;
             padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .controls {
@@ -37,6 +39,7 @@
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap; /* Allow controls to wrap on small screens */
         }
 
         .controls label {
@@ -67,8 +70,14 @@
             background-color: #059669;
         }
 
+        .table-wrapper {
+            overflow-x: auto; /* Enable horizontal scrollbar for table */
+            max-width: 100%;
+        }
+
         table {
             width: 100%;
+            min-width: 800px; /* Ensure table is wide enough for content */
             border-collapse: collapse;
             margin-top: 1rem;
             background-color: #FFFFFF;
@@ -80,6 +89,9 @@
             padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid #E5E7EB;
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for overflow */
+            white-space: normal; /* Allow wrapping if needed */
         }
 
         th {
@@ -87,12 +99,43 @@
             font-weight: 500;
         }
 
+        /* Preferred column widths with max-width to prevent overlap */
+        th:nth-child(1), td:nth-child(1) { width: 120px; max-width: 120px; } /* Thời gian */
+        th:nth-child(2), td:nth-child(2) { width: 80px; max-width: 80px; }   /* Tên bài */
+        th:nth-child(3), td:nth-child(3) { width: 100px; max-width: 100px; } /* Họ và Tên */
+        th:nth-child(4), td:nth-child(4) { width: 80px; max-width: 80px; }   /* Lớp */
+        th:nth-child(5), td:nth-child(5) { width: 150px; max-width: 150px; } /* Câu hỏi */
+        th:nth-child(6), td:nth-child(6) { width: 150px; max-width: 150px; } /* Câu trả lời */
+        th:nth-child(7), td:nth-child(7) { width: 150px; max-width: 150px; } /* Phản hồi */
+
         footer {
             text-align: center;
             padding: 1.5rem;
             background-color: #1E3A8A;
             color: white;
             font-size: 0.9rem;
+        }
+
+        /* Media query for mobile */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls input, .controls button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -106,20 +149,22 @@
             <input type="text" id="search-input" placeholder="Nhập thông tin để tìm kiếm...">
             <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
         </div>
-        <table id="history-table">
-            <thead>
-                <tr>
-                    <th>Thời gian</th>
-                    <th>Tên bài</th>
-                    <th>Họ và Tên</th>
-                    <th>Lớp</th>
-                    <th>Câu hỏi</th>
-                    <th>Câu trả lời</th>
-                    <th>Phản hồi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="table-wrapper">
+            <table id="history-table">
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Tên bài</th>
+                        <th>Họ và Tên</th>
+                        <th>Lớp</th>
+                        <th>Câu hỏi</th>
+                        <th>Câu trả lời</th>
+                        <th>Phản hồi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </main>
     <footer>
         <p>Tài liệu kiểm tra © <span id="current-year"></span> thiết kế bởi Thuận</p>
