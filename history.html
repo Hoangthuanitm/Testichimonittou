@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Samurai Japanese Center - Lịch sử kiểm tra</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -11,77 +11,98 @@
             margin: 0;
             padding: 0;
             background-color: #F9FAFB;
+            overflow-x: hidden;
         }
 
         header {
             background-color: #1E3A8A;
             color: white;
             text-align: center;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         header h1 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
         }
 
         main {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 0.5rem;
         }
 
         .filter-section {
             background-color: #FFFFFF;
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .filter-section label {
             font-weight: 500;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             display: block;
+            font-size: 0.9rem;
         }
 
         .filter-section input,
         .filter-section select {
             width: 100%;
-            max-width: 200px;
-            padding: 0.75rem;
+            padding: 0.5rem;
             border: 1px solid #D1D5DB;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             box-sizing: border-box;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
             margin-top: 1rem;
-            background-color: #FFFFFF;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #D1D5DB;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px; /* Ensures table is wide enough to require scrolling on mobile */
+            border-collapse: collapse;
+            background-color: #FFFFFF;
+        }
+
         th, td {
-            padding: 0.75rem;
+            padding: 0.5rem;
             text-align: left;
             border-bottom: 1px solid #E5E7EB;
+            font-size: 0.9rem;
         }
 
         th {
             background-color: #F3F4F6;
             font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .checkbox-column {
-            width: 50px;
+            width: 40px;
             text-align: center;
         }
 
@@ -89,13 +110,13 @@
             background-color: #10B981;
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: background-color 0.3s;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         button:hover {
@@ -110,7 +131,17 @@
             background-color: #DC2626;
         }
 
-        /* Modal Styling */
+        .feedback-btn {
+            background-color: #3B82F6;
+            padding: 0.4rem 0.8rem;
+            margin: 0;
+            font-size: 0.8rem;
+        }
+
+        .feedback-btn:hover {
+            background-color: #2563EB;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -126,10 +157,10 @@
 
         .modal-content {
             background-color: #FFFFFF;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 8px;
             width: 90%;
-            max-width: 400px;
+            max-width: 360px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             animation: slideIn 0.3s ease;
         }
@@ -141,28 +172,29 @@
 
         .modal-content h2 {
             margin: 0 0 1rem;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #1E3A8A;
         }
 
-        .modal-content input {
+        .modal-content input,
+        .modal-content textarea {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.5rem;
             border: 1px solid #D1D5DB;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
         }
 
         .modal-buttons {
             display: flex;
             justify-content: flex-end;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .modal-buttons button {
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             margin: 0;
         }
 
@@ -176,10 +208,44 @@
 
         footer {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1rem;
             background-color: #1E3A8A;
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 600px) {
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .filter-section div {
+                width: 100%;
+            }
+
+            .filter-section input,
+            .filter-section select {
+                max-width: none;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                width: 100%;
+                padding: 0.7rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .modal-content h2 {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -259,21 +325,23 @@
         </section>
         <section>
             <button class="delete-btn" id="delete-btn">Xóa</button>
-            <table id="history-table">
-                <thead>
-                    <tr>
-                        <th class="checkbox-column"><input type="checkbox" id="select-all"></th>
-                        <th>Thời gian</th>
-                        <th>Tên bài</th>
-                        <th>Họ và Tên</th>
-                        <th>Lớp</th>
-                        <th>Câu hỏi</th>
-                        <th>Câu trả lời</th>
-                        <th>Phản hồi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-container">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-column"><input type="checkbox" id="select-all"></th>
+                            <th>Thời gian</th>
+                            <th>Tên bài</th>
+                            <th>Họ và Tên</th>
+                            <th>Lớp</th>
+                            <th>Câu hỏi</th>
+                            <th>Câu trả lời</th>
+                            <th>Phản hồi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </section>
         <div class="modal" id="password-modal">
             <div class="modal-content">
@@ -285,6 +353,16 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="feedback-modal">
+            <div class="modal-content">
+                <h2>Chỉnh sửa phản hồi</h2>
+                <textarea id="feedback-input" rows="4" placeholder="Nhập phản hồi"></textarea>
+                <div class="modal-buttons">
+                    <button class="cancel-btn" id="feedback-cancel-btn">Hủy</button>
+                    <button id="feedback-save-btn">Lưu</button>
+                </div>
+            </div>
+        </div>
     </main>
     <footer>
         <p>Tài liệu kiểm tra © 2025 thiết kế bởi Thuận</p>
@@ -293,7 +371,7 @@
     <script type="module">
         // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -318,7 +396,9 @@
 
         // Sanitize text to prevent XSS
         function sanitizeText(text) {
-            return String(text).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"').replace(/'/g, '');
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Load history
@@ -368,7 +448,7 @@
                             <td>${sanitizeText(data.class || 'N/A')}</td>
                             <td>${sanitizeText(data.question || 'N/A')}</td>
                             <td>${sanitizeText(data.answer || 'N/A')}</td>
-                            <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                            <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')} <button class="feedback-btn" data-id="${doc.id}">Sửa</button></td>
                         `;
                         historyTableBody.appendChild(row);
                     }
@@ -378,7 +458,6 @@
                     historyTableBody.innerHTML = '<tr><td colspan="8">Không tìm thấy kết quả phù hợp.</td></tr>';
                 }
 
-                // Update select-all checkbox state
                 updateSelectAllCheckbox();
             } catch (error) {
                 console.error("Lỗi khi tải lịch sử:", error);
@@ -450,7 +529,6 @@
                     const docId = row.getAttribute('data-id');
                     await deleteDoc(doc(db, 'testHistoryKaiwa', docId));
                 }
-                alert('Xóa dữ liệu thành công!');
                 hidePasswordModal();
                 loadHistory();
             } catch (error) {
@@ -458,6 +536,51 @@
                 let errorMessage = 'Đã xảy ra lỗi khi xóa dữ liệu!';
                 if (error.code === 'permission-denied') {
                     errorMessage = 'Không có quyền xóa dữ liệu. Vui lòng kiểm tra cấu hình Firestore!';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!';
+                }
+                alert(errorMessage);
+            }
+        }
+
+        // Show feedback modal
+        function showFeedbackModal(docId, currentFeedback) {
+            const modal = document.getElementById('feedback-modal');
+            const feedbackInput = document.getElementById('feedback-input');
+            feedbackInput.value = currentFeedback || '';
+            modal.style.display = 'flex';
+            modal.dataset.docId = docId;
+        }
+
+        // Hide feedback modal
+        function hideFeedbackModal() {
+            const modal = document.getElementById('feedback-modal');
+            modal.style.display = 'none';
+            delete modal.dataset.docId;
+        }
+
+        // Save feedback
+        async function saveFeedback() {
+            const modal = document.getElementById('feedback-modal');
+            const docId = modal.dataset.docId;
+            const feedbackInput = document.getElementById('feedback-input').value;
+
+            if (!db || !docId) {
+                alert('Không thể lưu phản hồi: Kết nối cơ sở dữ liệu thất bại hoặc ID không hợp lệ!');
+                return;
+            }
+
+            try {
+                await updateDoc(doc(db, 'testHistoryKaiwa', docId), {
+                    feedback: feedbackInput
+                });
+                hideFeedbackModal();
+                loadHistory();
+            } catch (error) {
+                console.error('Lỗi khi lưu phản hồi:', error);
+                let errorMessage = 'Đã xảy ra lỗi khi lưu phản hồi!';
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Không có quyền cập nhật dữ liệu. Vui lòng kiểm tra cấu hình Firestore!';
                 } else if (error.code === 'unavailable') {
                     errorMessage = 'Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!';
                 }
@@ -475,6 +598,8 @@
             const cancelBtn = document.getElementById('cancel-btn');
             const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
             const selectAll = document.getElementById('select-all');
+            const feedbackCancelBtn = document.getElementById('feedback-cancel-btn');
+            const feedbackSaveBtn = document.getElementById('feedback-save-btn');
 
             filterDate.addEventListener('change', loadHistory);
             filterClass.addEventListener('input', loadHistory);
@@ -484,15 +609,24 @@
             cancelBtn.addEventListener('click', hidePasswordModal);
             confirmDeleteBtn.addEventListener('click', deleteHistory);
             selectAll.addEventListener('change', handleSelectAll);
+            feedbackCancelBtn.addEventListener('click', hideFeedbackModal);
+            feedbackSaveBtn.addEventListener('click', saveFeedback);
 
-            // Update select-all checkbox when individual checkboxes change
             document.addEventListener('change', function(e) {
                 if (e.target.classList.contains('row-checkbox')) {
                     updateSelectAllCheckbox();
                 }
             });
 
-            loadHistory(); // Initial load
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('feedback-btn')) {
+                    const docId = e.target.dataset.id;
+                    const feedback = e.target.parentElement.textContent.replace('Sửa', '').trim();
+                    showFeedbackModal(docId, feedback === 'Chưa có phản hồi' ? '' : feedback);
+                }
+            });
+
+            loadHistory();
         });
     </script>
 </body>
