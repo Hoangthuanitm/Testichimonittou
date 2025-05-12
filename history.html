@@ -13,27 +13,23 @@
             background-color: #F9FAFB;
             overflow-x: hidden;
         }
-
         header {
             background-color: #1E3A8A;
             color: white;
             text-align: center;
             padding: 1.5rem;
         }
-
         header h1 {
             margin: 0;
             font-size: 2rem;
             font-weight: 700;
         }
-
         main {
             max-width: 100%;
             margin: 2rem auto;
-            padding: 0sheading: 0 1rem;
+            padding: 0 1rem;
             box-sizing: border-box;
         }
-
         .controls {
             display: flex;
             align-items: center;
@@ -41,11 +37,9 @@
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
-
         .controls label {
             font-weight: 500;
         }
-
         .controls input, .controls select {
             padding: 0.75rem;
             border: 1px solid #D1D5DB;
@@ -54,7 +48,6 @@
             flex-grow: 1;
             min-width: 150px;
         }
-
         button {
             background-color: #10B981;
             color: white;
@@ -66,32 +59,25 @@
             font-weight: 500;
             transition: background-color 0.3s;
         }
-
         button:hover {
             background-color: #059669;
         }
-
         .delete-btn {
             background-color: #EF4444;
         }
-
         .delete-btn:hover {
             background-color: #DC2626;
         }
-
         .feedback-btn {
             background-color: #3B82F6;
         }
-
         .feedback-btn:hover {
             background-color: #2563EB;
         }
-
         .table-wrapper {
             overflow-x: auto;
             max-width: 100%;
         }
-
         table {
             width: 100%;
             min-width: 800px;
@@ -101,7 +87,6 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
         th, td {
             padding: 0.75rem;
             text-align: left;
@@ -110,21 +95,18 @@
             text-overflow: ellipsis;
             white-space: normal;
         }
-
         th {
             background-color: #F3F4F6;
             font-weight: 500;
         }
-
-        th:nth-child(1), td:nth-child(1) { width: 120px; max-width: 120px; }
-        th:nth-child(2), td:nth-child(2) { width: 80px; max-width: 80px; }
-        th:nth-child(3), td:nth-child(3) { width: 100px; max-width: 100px; }
-        th:nth-child(4), td:nth-child(4) { width: 80px; max-width: 80px; }
-        th:nth-child(5), td:nth-child(5) { width: 150px; max-width: 150px; }
+        th:nth-child(1), td:nth-child(1) { width: 50px; max-width: 50px; text-align: center; }
+        th:nth-child(2), td:nth-child(2) { width: 120px; max-width: 120px; }
+        th:nth-child(3), td:nth-child(3) { width: 80px; max-width: 80px; }
+        th:nth-child(4), td:nth-child(4) { width: 100px; max-width: 100px; }
+        th:nth-child(5), td:nth-child(5) { width: 80px; max-width: 80px; }
         th:nth-child(6), td:nth-child(6) { width: 150px; max-width: 150px; }
         th:nth-child(7), td:nth-child(7) { width: 150px; max-width: 150px; }
-        th:nth-child(8), td:nth-child(8) { width: 80px; max-width: 80px; text-align: center; }
-
+        th:nth-child(8), td:nth-child(8) { width: 150px; max-width: 150px; }
         .modal {
             display: none;
             position: fixed;
@@ -136,24 +118,21 @@
             z-index: 1000;
             overflow-y: auto;
         }
-
         .modal-content {
             background-color: #FFFFFF;
-            margin: 5% auto;
+            margin: 15% auto;
             padding: 2rem;
             border-radius: 8px;
             width: 90%;
-            max-width: 1000px;
+            max-width: 500px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             position: relative;
         }
-
         .modal-content h2 {
             margin-top: 0;
             font-size: 1.5rem;
             color: #1E3A8A;
         }
-
         .close-btn {
             position: absolute;
             top: 1rem;
@@ -162,28 +141,34 @@
             cursor: pointer;
             color: #666;
         }
-
         .close-btn:hover {
             color: #000;
         }
-
-        .modal-content textarea {
+        .modal-content input[type="password"] {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #D1D5DB;
             border-radius: 5px;
             font-size: 1rem;
             margin-bottom: 1rem;
-            resize: vertical;
         }
-
+        .modal-content .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .modal-content .cancel-btn {
+            background-color: #6B7280;
+        }
+        .modal-content .cancel-btn:hover {
+            background-color: #4B5563;
+        }
         .feedback-table {
             width: 100%;
             min-width: 800px;
             border-collapse: collapse;
             margin: 1rem 0;
         }
-
         .feedback-table th, .feedback-table td {
             padding: 0.75rem;
             border: 1px solid #E5E7EB;
@@ -192,11 +177,9 @@
             text-overflow: ellipsis;
             white-space: normal;
         }
-
         .feedback-table th {
             background-color: #F3F4F6;
         }
-
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -204,38 +187,31 @@
             color: white;
             font-size: 0.9rem;
         }
-
         @media (max-width: 600px) {
             header h1 {
                 font-size: 1.5rem;
             }
-
             .controls {
                 flex-direction: column;
                 align-items: stretch;
             }
-
             .controls input, .controls select, .controls button {
                 width: 100%;
                 box-sizing: border-box;
                 min-width: unset;
             }
-
             th, td {
                 padding: 0.5rem;
                 font-size: 0.9rem;
             }
-
             .modal-content {
                 width: 95%;
-                margin: 2% auto;
+                margin: 20% auto;
                 padding: 1rem;
             }
-
             .modal-content h2 {
                 font-size: 1.2rem;
             }
-
             .feedback-table th, .feedback-table td {
                 padding: 0.5rem;
                 font-size: 0.8rem;
@@ -285,12 +261,14 @@
                 <option value="25">Bài 25</option>
             </select>
             <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
-            <button onclick="openFeedbackModal()" aria-label="Thêm phản hồi" class="feedback-btn">Phản hồi</button>
+            <button onclick="showPasswordModal('feedback')" aria-label="Thêm phản hồi" class="feedback-btn">Phản hồi</button>
+            <button onclick="deleteSelectedAnswers()" aria-label="Xóa câu trả lời" class="delete-btn">Xóa</button>
         </div>
         <div class="table-wrapper">
             <table id="history-table">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="select-all" aria-label="Chọn tất cả"></th>
                         <th>Thời gian</th>
                         <th>Tên bài</th>
                         <th>Họ và Tên</th>
@@ -298,11 +276,23 @@
                         <th>Câu hỏi</th>
                         <th>Câu trả lời</th>
                         <th>Phản hồi</th>
-                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
+
+        <!-- Password Modal -->
+        <div id="password-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closePasswordModal()">×</span>
+                <h2>Nhập mật khẩu</h2>
+                <input type="password" id="password-input" placeholder="Mật khẩu..." aria-label="Nhập mật khẩu">
+                <div class="btn-group">
+                    <button class="cancel-btn" onclick="closePasswordModal()" aria-label="Hủy">Hủy</button>
+                    <button onclick="submitPassword()" aria-label="Xác nhận mật khẩu">Xác nhận</button>
+                </div>
+            </div>
         </div>
 
         <!-- Feedback Modal -->
@@ -371,6 +361,9 @@
 
         // Store full history data
         let fullHistory = [];
+        // Track delete authorization
+        let isDeleteAuthorized = false;
+        let passwordModalAction = null;
 
         // Load history with filters
         async function loadHistory() {
@@ -425,19 +418,20 @@
                         ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
                         : 'N/A';
                     row.innerHTML = `
-                        <td>${timestamp}</td>
+                        <td><input type="checkbox" class="select-row" data-id="${sanitizeText(data.id)}" aria-label="Chọn câu trả lời"></td>
+                        <td>${sanitizeText(timestamp)}</td>
                         <td>${sanitizeText(data.lesson || 'N/A')}</td>
                         <td>${sanitizeText(data.name || 'N/A')}</td>
                         <td>${sanitizeText(data.class || 'N/A')}</td>
                         <td>${sanitizeText(data.question || 'N/A')}</td>
                         <td>${sanitizeText(data.answer || 'N/A')}</td>
                         <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
-                        <td>
-                            <button class="delete-btn" onclick="deleteAnswer('${data.id}')" aria-label="Xóa câu trả lời">Xóa</button>
-                        </td>
                     `;
                     historyTableBody.appendChild(row);
                 });
+
+                // Update "Select All" checkbox state
+                updateSelectAllCheckbox();
             } catch (error) {
                 console.error("Lỗi khi tải lịch sử:", error);
                 let errorMessage = "Đã xảy ra lỗi khi tải lịch sử!";
@@ -450,19 +444,56 @@
             }
         }
 
-        async function deleteAnswer(docId) {
-            const password = prompt('Vui lòng nhập mật khẩu:', '');
+        // Password Modal Functions
+        function showPasswordModal(action) {
+            passwordModalAction = action;
+            const modal = document.getElementById('password-modal');
+            document.getElementById('password-input').value = '';
+            modal.style.display = 'block';
+            document.getElementById('password-input').focus();
+        }
+
+        function closePasswordModal() {
+            const modal = document.getElementById('password-modal');
+            modal.style.display = 'none';
+            passwordModalAction = null;
+        }
+
+        function submitPassword() {
+            const password = document.getElementById('password-input').value;
             if (password !== '112') {
                 alert('Mật khẩu không đúng!');
                 return;
             }
+            closePasswordModal();
+            if (passwordModalAction === 'delete') {
+                isDeleteAuthorized = true;
+                alert('Bạn đã được cấp quyền xóa. Vui lòng chọn câu trả lời và nhấn "Xóa" lại.');
+            } else if (passwordModalAction === 'feedback') {
+                openFeedbackModal();
+            }
+        }
 
-            if (!confirm('Bạn có chắc chắn muốn xóa câu trả lời này?')) {
+        // Delete selected answers
+        async function deleteSelectedAnswers() {
+            if (!isDeleteAuthorized) {
+                showPasswordModal('delete');
+                return;
+            }
+
+            const selectedCheckboxes = document.querySelectorAll('.select-row:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Vui lòng chọn ít nhất một câu trả lời để xóa!');
                 return;
             }
 
             try {
-                await deleteDoc(doc(db, 'testHistoryKaiwa', docId));
+                const deletePromises = Array.from(selectedCheckboxes).map(checkbox => {
+                    const docId = checkbox.getAttribute('data-id');
+                    return deleteDoc(doc(db, 'testHistoryKaiwa', docId));
+                });
+                await Promise.all(deletePromises);
+                isDeleteAuthorized = false; // Reset authorization after deletion
                 fullHistory = []; // Clear cache to force reload
                 await loadHistory();
                 alert('Xóa câu trả lời thành công!');
@@ -472,13 +503,14 @@
             }
         }
 
-        function openFeedbackModal() {
-            const password = prompt('Vui lòng nhập mật khẩu:', '');
-            if (password !== '112') {
-                alert('Mật khẩu không đúng!');
-                return;
-            }
+        // Handle "Select All" checkbox
+        function updateSelectAllCheckbox() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const rowCheckboxes = document.querySelectorAll('.select-row');
+            selectAllCheckbox.checked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
+        }
 
+        function openFeedbackModal() {
             const modal = document.getElementById('feedback-modal');
             const feedbackTableBody = document.getElementById('feedback-table-body');
             feedbackTableBody.innerHTML = '';
@@ -492,7 +524,7 @@
                     <td>${sanitizeText(data.question || 'N/A')}</td>
                     <td>${sanitizeText(data.answer || 'N/A')}</td>
                     <td>
-                        <textarea class="feedback-input" data-doc-id="${data.id}" placeholder="Nhập phản hồi..." aria-label="Phản hồi cho ${sanitizeText(data.name || 'học viên')}">${sanitizeText(data.feedback || '')}</textarea>
+                        <textarea class="feedback-input" data-doc-id="${sanitizeText(data.id)}" placeholder="Nhập phản hồi..." aria-label="Phản hồi cho ${sanitizeText(data.name || 'học viên')}">${sanitizeText(data.feedback || '')}</textarea>
                     </td>
                 `;
                 feedbackTableBody.appendChild(row);
@@ -550,11 +582,36 @@
                 input.addEventListener('change', loadHistory);
                 input.addEventListener('input', loadHistory);
             });
+
+            // Add event listener for "Select All" checkbox
+            document.getElementById('select-all').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                document.querySelectorAll('.select-row').forEach(cb => {
+                    cb.checked = isChecked;
+                });
+            });
+
+            // Update "Select All" state when individual checkboxes change
+            document.addEventListener('change', (e) => {
+                if (e.target.classList.contains('select-row')) {
+                    updateSelectAllCheckbox();
+                }
+            });
+
+            // Add Enter key support for password submission
+            document.getElementById('password-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    submitPassword();
+                }
+            });
         });
 
         // Expose functions to global scope
         window.goBack = goBack;
-        window.deleteAnswer = deleteAnswer;
+        window.deleteSelectedAnswers = deleteSelectedAnswers;
+        window.showPasswordModal = showPasswordModal;
+        window.closePasswordModal = closePasswordModal;
+        window.submitPassword = submitPassword;
         window.openFeedbackModal = openFeedbackModal;
         window.closeFeedbackModal = closeFeedbackModal;
         window.submitAllFeedback = submitAllFeedback;
