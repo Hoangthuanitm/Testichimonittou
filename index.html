@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samurai Japanese Center - Kiểm tra Kaiwa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F9FAFB;
+        }
+
+        header {
+            background-color: #1E3A8A;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        select:disabled {
+            background-color: #E5E7EB;
+            cursor: not-allowed;
+        }
+
+        #question-container, #history-container {
+            background-color: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #current-question {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        #question-progress {
+            font-style: italic;
+            color: #6B7280;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background-color: #10B981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-right: 1rem;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #059669;
+        }
+
+        button:disabled {
+            background-color: #D1D5DB;
+            cursor: not-allowed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            background-color: #F3F4F6;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #1E3A8A;
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Samurai Japanese Center - Kiểm tra Kaiwa</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Thông tin học viên</h2>
+            <label for="student-name">Họ và Tên:</label>
+            <input type="text" id="student-name" placeholder="Nhập họ và tên" required>
+            <label for="student-class">Lớp:</label>
+            <input type="text" id="student-class" placeholder="Nhập lớp" required>
+        </section>
+        <section>
+            <label for="lesson-select">Chọn bài học:</label>
+            <select id="lesson-select" disabled>
+                <option value="">-- Chọn bài --</option>
+                <option value="1">Bài 1</option>
+                <option value="2">Bài 2</option>
+                <option value="3">Bài 3</option>
+                <option value="4">Bài 4</option>
+                <option value="5">Bài 5</option>
+                <option value="6">Bài 6</option>
+                <option value="7">Bài 7</option>
+                <option value="8">Bài 8</option>
+                <option value="9">Bài 9</option>
+                <option value="10">Bài 10</option>
+                <option value="11">Bài 11</option>
+                <option value="12">Bài 12</option>
+                <option value="13">Bài 13</option>
+                <option value="14">Bài 14</option>
+                <option value="15">Bài 15</option>
+                <option value="16">Bài 16</option>
+                <option value="17">Bài 17</option>
+                <option value="18">Bài 18</option>
+                <option value="19">Bài 19</option>
+                <option value="20">Bài 20</option>
+                <option value="21">Bài 21</option>
+                <option value="22">Bài 22</option>
+                <option value="23">Bài 23</option>
+                <option value="24">Bài 24</option>
+                <option value="25">Bài 25</option>
+            </select>
+            <div>
+                <button onclick="startTest()" aria-label="Bắt đầu kiểm tra">Bắt đầu kiểm tra</button>
+                <button onclick="showHistory()" aria-label="Xem lịch sử kiểm tra">Lịch sử kiểm tra</button>
+            </div>
+        </section>
+        <section id="question-container" style="display: none;">
+            <h2>Câu hỏi</h2>
+            <div id="current-question"></div>
+            <div id="question-progress"></div>
+            <textarea id="answer-input" placeholder="Nhập câu trả lời của bạn..."></textarea>
+            <div id="answer-buttons">
+                <button onclick="checkAnswer()" aria-label="Gửi câu trả lời">Trả lời</button>
+            </div>
+            <button id="complete-button" onclick="completeTest()" aria-label="Hoàn thành bài kiểm tra" style="display: none;">Hoàn thành</button>
+        </section>
+        <section id="history-container" style="display: none;">
+            <table id="history-table">
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Tên bài</th>
+                        <th>Họ và Tên</th>
+                        <th>Lớp</th>
+                        <th>Câu hỏi</th>
+                        <th>Câu trả lời</th>
+                        <th>Phản hồi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>Tài liệu kiểm tra © <span id="current-year"></span> thiết kế bởi Thuận</p>
+    </footer>
+
+    <!-- Firebase CDN -->
+    <script type="module">
+        // Import Firebase modular SDK
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfy4QMD9_7PyFHpInNdKDRWuW4AYCtLJ4",
+            authDomain: "history-e4633.firebaseapp.com",
+            projectId: "history-e4633",
+            storageBucket: "history-e4633.firebasestorage.app",
+            messagingSenderId: "331974436893",
+            appId: "1:331974436893:web:10c3c6adf7b66d2b5fbef4",
+            measurementId: "G-DC055090BW"
+        };
+
+        // Initialize Firebase
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (error) {
+            console.error("Lỗi khi khởi tạo Firebase:", error);
+            alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng kiểm tra kết nối mạng hoặc cấu hình Firebase!");
+        }
+
+        // Questions data
+        const questions = {
+            1: [
+                "お名前は何ですか？",
+                "おいくつですか？",
+                "あなたは日本人ですか？",
+                "あなたの国は何ですか？",
+                "お父さんはおいくつですか？",
+                "あなたは学生ですか？",
+                "あなたは会社員ですか？",
+                "あなたは先生ですか？"
+            ],
+            3: [
+                "お家はどちらですか？",
+                "あなたのボールペンはいくらですか？",
+                "会社はどちらですか？",
+                "学校はどこですか？",
+                "あなたの家は１階ですか？",
+                "駅はどこですか？"
+            ],
+            4: [
+                "今何時ですか？",
+                "あなたの誕生日はいつですか？",
+                "会社は何時からですか？",
+                "あなたは朝何時に起きますか？",
+                "きのう何時に寝ましたか？",
+                "サムライセンターは何時から何時までですか？",
+                "日曜日に何時に来ますか？",
+                "授業は何時に終わりますか？",
+                "きのう何時に家に帰りましたか？",
+                "お店は何時から何時までですか？",
+                "サムライセンターの授業は何時ですか？",
+                "きのう何をしましたか？",
+                "休みは何曜日ですか？"
+            ],
+            5: [
+                "どこへ行きますか？",
+                "きのうどこへ行きましたか？",
+                "いつ日本へ行きますか？",
+                "一人で日本へ行きますか？",
+                "誕生日はいつですか？",
+                "次の休みはいつですか？",
+                "いつサムライセンターへ来ましたか？",
+                "タクシーでサムライセンターへ来ましたか？",
+                "今日の天気はどうですか？",
+                "おとといの天気はどうでしたか？"
+            ],
+            6: [
+                "あなたはタバコを吸いますか？",
+                "ビールを飲みますか？",
+                "いつもどこでご飯を食べますか？",
+                "朝ご飯を食べますか？",
+                "きのう何を食べましたか？",
+                "いつも何時にご飯を ănますか？",
+                "サムライセンターで何をしますか？",
+                "昼ご飯はどこで ănますか？",
+                "夜は何をしますか？",
+                "きのう何時まで勉強しましたか？",
+                "朝何時から何時まで勉強しますか？",
+                "昼から夕方まで何をしますか？"
+            ],
+            7: [
+                "もうご飯を食べましたか？",
+                "スプーンでご飯を食べますか？",
+                "誕生日にプレゼントをもらいましたか？",
+                "お母さんの誕生日に何をあげましたか？",
+                "クリスマスにプレゼントをもらいましたか？",
+                "もう６時の授業が終わりましたか？",
+                "友達に電話をかけましたか？",
+                "もう昼ご飯を食べましたか？"
+            ],
+            8: [
+                "センターの授業はどうですか？",
+                "ホーチミンはどんなところですか？",
+                "お父さんはどんな人ですか？",
+                "お父さんはやさしいですか？",
+                "ITMセンターの授業にもう慣れましたか？",
+                "ベトナムはどんな国ですか？",
+                "あなたの国はどんな国ですか？",
+                "あなたの家はどうですか？",
+                "ホーチミンはどんな街ですか？",
+                "センターの先生はやさしいですか？",
+                "あなたの学校はどうですか？"
+            ],
+            9: [
+                "どんなスポーツが好きですか？",
+                "どうして日本語を勉強しますか？",
+                "あなたは歌が上手ですか？",
+                "あなたは日本語がわかりますか？",
+                "今、買い物がありますか？",
+                "どんな映画が好きですか？",
+                "どんな音楽が好きですか？",
+                "サッカーが好きですか？",
+                "どんな飲み物が好きですか？",
+                "どんな食べ物が好きですか？どんな食べ物が嫌いですか？",
+                "どんな本が thíchですか？",
+                "家にペットがいますか？"
+            ],
+            10: [
+                "あなたの国に山がありますか？",
+                "どこに住んでいますか？",
+                "家に猫がいますか？",
+                "国にATMがありますか？",
+                "あなたの友達はどこに住んでいますか？",
+                "学校に図書館がありますか？",
+                "あなたの家族に誰がいますか？",
+                "あなたの部屋にテレビがありますか？",
+                "家に扇風機がありますか？",
+                "会社に誰がいますか？",
+                "あなたの学校に図書館がありますか？"
+            ],
+            11: [
+                "何時に寝ますか？",
+                "日本までどのくらい時間がかかりましたか？",
+                "センターからあなたの家までバスでどのくらいかかりますか？",
+                "あなたの家から会社までバスでかかりますか？",
+                "どのくらい日本語を勉強できますか？",
+                "家に部屋がいくつありますか？",
+                "あなたのクラスは何人ですか？",
+                "朝、何をしますか？",
+                "クラスに日本人がいますか？",
+                "クラスに外国人がいますか？"
+            ],
+            12: [
+                "日本はどうでしたか？",
+                "ベトナムでいつが好きですか？",
+                "日本とベトナム、どちらが thíchですか？",
+                "クラスで誰が一番やさしいですか？",
+                "サッカーとテニス、どちらが thíchですか？",
+                "ベトナムで何が thíchですか？",
+                "クラスで誰が日本語が上手ですか？",
+                "熱いコーヒーと冷たいコーヒー、どちらが thíchですか？",
+                "お父さんとお母さん、どちらが料理が上手ですか？",
+                "ベトナムで何が一番 thíchですか？",
+                "ベトナムで何が面白いですか？",
+                "ベトナムで何が thíchですか？",
+                "ベトナムでどこが thíchですか？"
+            ],
+            13: [
+                "日本語は面白いですか？",
+                "日本語と英語、どちらが面白いですか？",
+                "今週末、何をしたいですか？",
+                "日本に住みたいですか？",
+                "日本へ旅行に行きたいですか？",
+                "日本へ勉強しに行きますか？",
+                "誕生日に何をもらいたいですか？",
+                "サムライセンターへ日本語を勉強しに来ましたか？",
+                "昼ご飯を食べにどこへ行きますか？",
+                "どんな人と話したいですか？"
+            ],
+            14: [
+                "今、何を持っていますか？",
+                "日本語を勉強していますか？",
+                "本を読んでいますか？",
+                "あなたの家族について教えてください。",
+                "日本とベトナムの違いを教えてください。",
+                "あなたの趣味を教えてください。"
+            ],
+            15: [
+                "日本語を話していますか？",
+                "バイクを運転していますか？",
+                "パソコンを使っていますか？",
+                "ここでタバコを吸ってもいいですか？",
+                "ここで写真を撮ってもいいですか？",
+                "あなたはどこに住んでいますか？",
+                "ここでご飯を食べてもいいですか？",
+                "センターでお茶を飲んでもいいですか？",
+                "ここで寝てもいいですか？"
+            ],
+            16: [
+                "家に帰ってから何をしますか？",
+                "きのう、ご飯を食べてから何をしましたか？",
+                "日本で３年住んで、ベトナムへ帰ってから何をしますか？",
+                "日本の天気はどうですか？",
+                "センターの授業はどうですか？",
+                "ベトナムの食べ物はどうですか？",
+                "日本へ行って、どこへ行きたいですか？"
+            ],
+            17: [
+                "センターに毎日来なければなりませんか？",
+                "日本に行きます。パスポートを持たなければなりませんか？",
+                "毎朝センターに来なければなりませんか？",
+                "宿題をしなければなりませんか？",
+                "お腹が痛いです。病院に行かなければなりませんか？",
+                "日本へ行くのにビザを取らなければならない？"
+            ],
+            18: [
+                "日本語で話すことができますか？",
+                "どんなスポーツをすることができますか？",
+                "ピアノを弾けますか？",
+                "あなたの仕事は何ですか？",
+                "ご飯を食べる前に何をしますか？",
+                "寝る前に何をしますか？",
+                "ベトナムで日本語を話すことができますか？",
+                "ベトナムで英語を話すことができますか？",
+                "お茶を飲みたいですが、どこで飲むことができますか？",
+                "日本へ行くのに何をしたいですか？"
+            ],
+            19: [
+                "日本の文化を勉強しましたか？",
+                "日本語が上手になりましたか？",
+                "ダイエットをしたことがありますか？",
+                "日本に行ったことがありますか？",
+                "日本へ行ってから何をしたいですか？",
+                "寿司を食べたことがありますか？",
+                "ベトナムでどこへ行ったことがありますか？",
+                "ハノイに行ったことがありますか？",
+                "センターでタバコを吸ってはいけませんか？",
+                "友達にプレゼントをあげたことがありますか？"
+            ],
+            20: [
+                "日本語を話す？",
+                "ベトナムで何が好き？",
+                "漢字がいくつわかる？",
+                "ベトナムと日本、どっちが面白い？",
+                "日本語がわかる？",
+                "きのうは天気がどうだった？",
+                "日本語が話せる？",
+                "ご飯を食べた？",
+                "明日、ビールを飲まない？",
+                "今、何を持っている？",
+                "ご飯はどこに住んでいる？",
+                "きのう、何だった？",
+                "今、何してる？"
+            ],
+            21: [
+                "日本語が難しいと思いますか？",
+                "日本は楽しいと思いますか？",
+                "日本の文化についてどう思いますか？",
+                "ベトナムについてどう思いますか？",
+                "ご飯を食べた後で寝ると思いますか？",
+                "日本語と英語、どちらが難しいと思いますか？",
+                "ベトナムでどこが楽しいと思いますか？",
+                "寝る前に何をしますか？"
+            ],
+            22: [
+                "あなたが生まれたところはどこですか？",
+                "ほしいものは何ですか？",
+                "今、電話をかけている人はいますか？",
+                "飲むお茶がありますか？",
+                "レストランで食べるのと家で食べるの、どちらが好きですか？",
+                "初めて行った国はどこですか？",
+                "今、着ている服はいつ買いましたか？",
+                "今までに行ったことがある国はどこですか？",
+                "お母さんが作った料理が好きですか？",
+                "日本にいるうちに見たいものは何ですか？",
+                "好きな食べ物は何ですか？嫌いな食べ物は何ですか？"
+            ],
+            23: [
+                "日本へ行って、道がわからない、どうしますか？",
+                "忙しい時、何をしますか？",
+                "日本へ行くとき、荷物が重いですか？",
+                "たくさんお酒を飲むと、どうなりますか？",
+                "センターの近くにコンビニがありますか？",
+                "家へ帰るとき、何で帰りますか？どのぐらいかかりますか？",
+                "病気になったとき、薬を飲んでもいいですか？",
+                "日本語がわからないとき、どうしますか？",
+                "電話をかけるとき何と言いますか？",
+                "忙しい時、何をしますか？",
+                "疲れたとき、どうしますか？"
+            ],
+            24: [
+                "あなたはお母さんにプレゼントをあげたいですか？",
+                "お金がないとき、誰かに借りますか？",
+                "あなたは誕生日にお母さんに何をしてあげますか？",
+                "誕生日にお母さんにプレゼントをもらいましたか？",
+                "お母さんが疲れたとき、あなたはどこを助けてあげますか？"
+            ],
+            25: [
+                "いい天気だったら、どこへ旅行に行きたいですか？",
+                "宿題が多かったら、どうしますか？",
+                "日本語を話す仕事に就きたいですか？",
+                "時間があれば、何をしたいですか？",
+                "もし、お金がたくさんあったら、何をしたいですか？",
+                "日本でも働きますか？",
+                "日本へ行ったら、どこへ行きたいですか？",
+                "チャンスがあったら、日本へ行きたいですか？",
+                "日本語が上手くなかったら、どうしますか？",
+                "日本に友達がいなかったら、どうしますか？"
+            ]
+        };
+
+        let currentLesson = null;
+        let currentQuestionIndex = 0;
+
+        // Set dynamic year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Sanitize text to prevent XSS
+        function sanitizeText(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Check student information
+        function checkStudentInfo() {
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+            const lessonSelect = document.getElementById('lesson-select');
+
+            lessonSelect.disabled = !(studentName && studentClass);
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const lessonSelect = document.getElementById('lesson-select');
+            lessonSelect.addEventListener('change', loadQuestions);
+
+            const studentNameInput = document.getElementById('student-name');
+            const studentClassInput = document.getElementById('student-class');
+            studentNameInput.addEventListener('input', checkStudentInfo);
+            studentClassInput.addEventListener('input', checkStudentInfo);
+        });
+
+        function loadQuestions() {
+            const lessonSelect = document.getElementById("lesson-select");
+            currentLesson = lessonSelect.value;
+        }
+
+        function displayCurrentQuestion() {
+            const currentQuestionDiv = document.getElementById("current-question");
+            const questionProgress = document.getElementById("question-progress");
+            const answerButtons = document.getElementById("answer-buttons");
+            const completeButton = document.getElementById("complete-button");
+
+            if (questions[currentLesson] && currentQuestionIndex < questions[currentLesson].length) {
+                currentQuestionDiv.innerHTML = sanitizeText(questions[currentLesson][currentQuestionIndex]);
+                questionProgress.innerHTML = `Câu ${currentQuestionIndex + 1}/${questions[currentLesson].length}`;
+                answerButtons.style.display = 'block';
+                completeButton.style.display = 'none';
+            } else {
+                currentQuestionDiv.innerHTML = "Hoàn thành bài học!";
+                questionProgress.innerHTML = "";
+                answerButtons.style.display = 'none';
+                completeButton.style.display = 'block';
+            }
+        }
+
+        function startTest() {
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+            const lessonSelect = document.getElementById('lesson-select').value;
+            const answerInput = document.getElementById('answer-input');
+
+            if (!studentName || !studentClass) {
+                alert("Vui lòng nhập họ và tên và lớp!");
+                return;
+            }
+
+            if (!lessonSelect) {
+                alert("Vui lòng chọn bài học!");
+                return;
+            }
+
+            currentQuestionIndex = 0;
+            answerInput.value = "";
+            document.getElementById('question-container').style.display = 'block';
+            displayCurrentQuestion();
+        }
+
+        async function checkAnswer() {
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+            const answerInput = document.getElementById('answer-input').value.trim();
+
+            if (!studentName || !studentClass) {
+                alert("Vui lòng nhập họ và tên và lớp!");
+                return;
+            }
+
+            if (answerInput === "") {
+                alert("Vui lòng nhập câu trả lời!");
+                return;
+            }
+
+            if (!db) {
+                alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng thử lại sau!");
+                return;
+            }
+
+            if (currentLesson && questions[currentLesson][currentQuestionIndex]) {
+                try {
+                    await addDoc(collection(db, 'testHistoryKaiwa'), {
+                        name: studentName,
+                        class: studentClass,
+                        lesson: currentLesson,
+                        question: questions[currentLesson][currentQuestionIndex],
+                        answer: answerInput,
+                        feedback: "",
+                        timestamp: serverTimestamp()
+                    });
+                    alert(`Câu trả lời của bạn: ${sanitizeText(answerInput)}`);
+                    if (currentQuestionIndex < questions[currentLesson].length - 1) {
+                        currentQuestionIndex++;
+                        document.getElementById('answer-input').value = "";
+                        displayCurrentQuestion();
+                    } else {
+                        document.getElementById("answer-buttons").style.display = 'none';
+                        document.getElementById("complete-button").style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi lưu câu trả lời:", error);
+                    alert(`Đã xảy ra lỗi khi lưu câu trả lời: ${error.message}`);
+                }
+            }
+        }
+
+        function completeTest() {
+            document.getElementById('history-container').style.display = 'block';
+            loadHistory();
+        }
+
+        async function loadHistory() {
+            const historyTableBody = document.querySelector("#history-table tbody");
+            historyTableBody.innerHTML = "";
+
+            if (!db) {
+                console.error("Firestore chưa được khởi tạo.");
+                alert("Không thể tải lịch sử: Kết nối cơ sở dữ liệu thất bại!");
+                return;
+            }
+
+            try {
+                const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    historyTableBody.innerHTML = '<tr><td colspan="7">Chưa có lịch sử trả lời.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+                    const timestamp = data.timestamp && data.timestamp.toDate
+                        ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
+                        : 'N/A';
+                    row.innerHTML = `
+                        <td>${timestamp}</td>
+                        <td>${sanitizeText(data.lesson || 'N/A')}</td>
+                        <td>${sanitizeText(data.name || 'N/A')}</td>
+                        <td>${sanitizeText(data.class || 'N/A')}</td>
+                        <td>${sanitizeText(data.question || 'N/A')}</td>
+                        <td>${sanitizeText(data.answer || 'N/A')}</td>
+                        <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                    `;
+                    historyTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Lỗi khi tải lịch sử:", error);
+                let errorMessage = "Đã xảy ra lỗi khi tải lịch sử!";
+                if (error.code === 'permission-denied') {
+                    errorMessage = "Không có quyền truy cập dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
+                } else if (error.code === 'unavailable') {
+                    errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
+                }
+                alert(errorMessage);
+            }
+        }
+
+        function showHistory() {
+            window.location.href = 'history.html';
+        }
+
+        // Expose functions to global scope for onclick handlers
+        window.startTest = startTest;
+        window.checkAnswer = checkAnswer;
+        window.completeTest = completeTest;
+        window.showHistory = showHistory;
+    </script>
+</body>
+</html>
