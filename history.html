@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử kiểm tra - Samurai Japanese Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F9FAFB;
+        }
+
+        header {
+            background-color: #1E3A8A;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        button {
+            background-color: #10B981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-right: 1rem;
+        }
+
+        button:hover {
+            background-color: #059669;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            background-color: #F3F4F6;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #1E3A8A;
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lịch sử kiểm tra - Samurai Japanese Center</h1>
+    </header>
+    <main>
+        <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
+        <table id="history-table">
+            <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Tên bài</th>
+                    <th>Họ và Tên</th>
+                    <th>Lớp</th>
+                    <th>Câu hỏi</th>
+                    <th>Câu trả lời</th>
+                    <th>Phản hồi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+    <footer>
+        <p>Tài liệu kiểm tra © <span id="current-year"></span> thiết kế bởi Thuận</p>
+    </footer>
+
+    <!-- Firebase CDN -->
+    <script type="module">
+        // Import Firebase modular SDK
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { getFirestore, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfy4QMD9_7PyFHpInNdKDRWuW4AYCtLJ4",
+            authDomain: "history-e4633.firebaseapp.com",
+            projectId: "history-e4633",
+            storageBucket: "history-e4633.firebasestorage.app",
+            messagingSenderId: "331974436893",
+            appId: "1:331974436893:web:10c3c6adf7b66d2b5fbef4",
+            measurementId: "G-DC055090BW"
+        };
+
+        // Initialize Firebase
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (error) {
+            console.error("Lỗi khi khởi tạo Firebase:", error);
+            alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng kiểm tra kết nối mạng hoặc cấu hình Firebase!");
+        }
+
+        // Set dynamic year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Sanitize text to prevent XSS
+        function sanitizeText(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load history
+        async function loadHistory() {
+            const historyTableBody = document.querySelector("#history-table tbody");
+            historyTableBody.innerHTML = "";
+
+            if (!db) {
+                console.error("Firestore chưa được khởi tạo.");
+                alert("Không thể tải lịch sử: Kết nối cơ sở dữ liệu thất bại!");
+                return;
+            }
+
+            try {
+                const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    historyTableBody.innerHTML = '<tr><td colspan="7">Chưa có lịch sử trả lời.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+                    const timestamp = data.timestamp && data.timestamp.toDate
+                        ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
+                        : 'N/A';
+                    row.innerHTML = `
+                        <td>${timestamp}</td>
+                        <td>${sanitizeText(data.lesson || 'N/A')}</td>
+                        <td>${sanitizeText(data.name || 'N/A')}</td>
+                        <td>${sanitizeText(data.class || 'N/A')}</td>
+                        <td>${sanitizeText(data.question || 'N/A')}</td>
+                        <td>${sanitizeText(data.answer || 'N/A')}</td>
+                        <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                    `;
+                    historyTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Lỗi khi tải lịch sử:", error);
+                let errorMessage = "Đã xảy ra lỗi khi tải lịch sử!";
+                if (error.code === 'permission-denied') {
+                    errorMessage = "Không có quyền truy cập dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
+                } else if (error.code === 'unavailable') {
+                    errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
+                }
+                alert(errorMessage);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize history table
+        document.addEventListener('DOMContentLoaded', loadHistory);
+
+        // Expose functions to global scope
+        window.goBack = goBack;
+    </script>
+</body>
+</html>
