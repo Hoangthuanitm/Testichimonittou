@@ -87,15 +87,6 @@
             font-weight: 500;
         }
 
-        textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 5px;
-            font-size: 1rem;
-            resize: vertical;
-        }
-
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -113,7 +104,6 @@
         <div class="controls">
             <label for="search-input">Tìm kiếm:</label>
             <input type="text" id="search-input" placeholder="Nhập thông tin để tìm kiếm...">
-            <button onclick="saveAllFeedback()" aria-label="Chấm bài">Chấm bài</button>
             <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
         </div>
         <table id="history-table">
@@ -139,7 +129,7 @@
     <script type="module">
         // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, orderBy, query, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -224,9 +214,7 @@
                         <td>${sanitizeText(data.class || 'N/A')}</td>
                         <td>${sanitizeText(data.question || 'N/A')}</td>
                         <td>${sanitizeText(data.answer || 'N/A')}</td>
-                        <td>
-                            <textarea id="feedback-${data.id}" rows="3">${sanitizeText(data.feedback || '')}</textarea>
-                        </td>
+                        <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
                     `;
                     historyTableBody.appendChild(row);
                 });
@@ -235,52 +223,6 @@
                 let errorMessage = "Đã xảy ra lỗi khi tải lịch sử!";
                 if (error.code === 'permission-denied') {
                     errorMessage = "Không có quyền truy cập dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
-                } else if (error.code === 'unavailable') {
-                    errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
-                }
-                alert(errorMessage);
-            }
-        }
-
-        async function saveAllFeedback() {
-            if (!db) {
-                alert("Không thể kết nối với cơ sở dữ liệu!");
-                return;
-            }
-
-            try {
-                const updates = [];
-                const textareas = document.querySelectorAll('textarea[id^="feedback-"]');
-                textareas.forEach(textarea => {
-                    const docId = textarea.id.replace('feedback-', '');
-                    const newFeedback = textarea.value;
-                    const historyItem = fullHistory.find(item => item.id === docId);
-                    if (historyItem && newFeedback !== (historyItem.feedback || '')) {
-                        updates.push({ docId, feedback: newFeedback });
-                    }
-                });
-
-                if (updates.length === 0) {
-                    alert("Không có thay đổi nào để lưu!");
-                    return;
-                }
-
-                for (const update of updates) {
-                    const docRef = doc(db, 'testHistoryKaiwa', update.docId);
-                    await updateDoc(docRef, { feedback: update.feedback });
-                    // Update fullHistory
-                    const index = fullHistory.findIndex(item => item.id === update.docId);
-                    if (index !== -1) {
-                        fullHistory[index].feedback = update.feedback;
-                    }
-                }
-
-                alert(`Đã lưu ${updates.length} phản hồi thành công!`);
-            } catch (error) {
-                console.error("Lỗi khi lưu phản hồi:", error);
-                let errorMessage = "Đã xảy ra lỗi khi lưu phản hồi!";
-                if (error.code === 'permission-denied') {
-                    errorMessage = "Không có quyền cập nhật dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
                 } else if (error.code === 'unavailable') {
                     errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
                 }
@@ -302,7 +244,6 @@
         });
 
         // Expose functions to global scope
-        window.saveAllFeedback = saveAllFeedback;
         window.goBack = goBack;
     </script>
 </body>
