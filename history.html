@@ -32,6 +32,25 @@
             padding: 0 1rem;
         }
 
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .controls label {
+            font-weight: 500;
+        }
+
+        .controls input {
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 5px;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+
         button {
             background-color: #10B981;
             color: white;
@@ -42,7 +61,6 @@
             font-size: 1rem;
             font-weight: 500;
             transition: background-color 0.3s;
-            margin-right: 1rem;
         }
 
         button:hover {
@@ -69,6 +87,15 @@
             font-weight: 500;
         }
 
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -83,7 +110,12 @@
         <h1>Lịch sử kiểm tra - Samurai Japanese Center</h1>
     </header>
     <main>
-        <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
+        <div class="controls">
+            <label for="search-input">Tìm kiếm:</label>
+            <input type="text" id="search-input" placeholder="Nhập thông tin để tìm kiếm...">
+            <button onclick="saveAllFeedback()" aria-label="Chấm bài">Chấm bài</button>
+            <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
+        </div>
         <table id="history-table">
             <thead>
                 <tr>
@@ -107,7 +139,7 @@
     <script type="module">
         // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, orderBy, query, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -140,8 +172,11 @@
             return div.innerHTML;
         }
 
+        // Store full history data
+        let fullHistory = [];
+
         // Load history
-        async function loadHistory() {
+        async function loadHistory(searchTerm = '') {
             const historyTableBody = document.querySelector("#history-table tbody");
             historyTableBody.innerHTML = "";
 
@@ -152,16 +187,32 @@
             }
 
             try {
-                const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
-                const querySnapshot = await getDocs(q);
+                if (fullHistory.length === 0) {
+                    const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
+                    const querySnapshot = await getDocs(q);
+                    fullHistory = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                }
 
-                if (querySnapshot.empty) {
-                    historyTableBody.innerHTML = '<tr><td colspan="7">Chưa có lịch sử trả lời.</td></tr>';
+                const filteredHistory = searchTerm
+                    ? fullHistory.filter(item => {
+                          const searchLower = searchTerm.toLowerCase();
+                          return (
+                              (item.name || '').toLowerCase().includes(searchLower) ||
+                              (item.class || '').toLowerCase().includes(searchLower) ||
+                              (item.lesson || '').toLowerCase().includes(searchLower) ||
+                              (item.question || '').toLowerCase().includes(searchLower) ||
+                              (item.answer || '').toLowerCase().includes(searchLower) ||
+                              (item.feedback || '').toLowerCase().includes(searchLower)
+                          );
+                      })
+                    : fullHistory;
+
+                if (filteredHistory.length === 0) {
+                    historyTableBody.innerHTML = '<tr><td colspan="7">Không tìm thấy kết quả.</td></tr>';
                     return;
                 }
 
-                querySnapshot.forEach(doc => {
-                    const data = doc.data();
+                filteredHistory.forEach(data => {
                     const row = document.createElement('tr');
                     const timestamp = data.timestamp && data.timestamp.toDate
                         ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
@@ -173,7 +224,9 @@
                         <td>${sanitizeText(data.class || 'N/A')}</td>
                         <td>${sanitizeText(data.question || 'N/A')}</td>
                         <td>${sanitizeText(data.answer || 'N/A')}</td>
-                        <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                        <td>
+                            <textarea id="feedback-${data.id}" rows="3">${sanitizeText(data.feedback || '')}</textarea>
+                        </td>
                     `;
                     historyTableBody.appendChild(row);
                 });
@@ -189,14 +242,67 @@
             }
         }
 
+        async function saveAllFeedback() {
+            if (!db) {
+                alert("Không thể kết nối với cơ sở dữ liệu!");
+                return;
+            }
+
+            try {
+                const updates = [];
+                const textareas = document.querySelectorAll('textarea[id^="feedback-"]');
+                textareas.forEach(textarea => {
+                    const docId = textarea.id.replace('feedback-', '');
+                    const newFeedback = textarea.value;
+                    const historyItem = fullHistory.find(item => item.id === docId);
+                    if (historyItem && newFeedback !== (historyItem.feedback || '')) {
+                        updates.push({ docId, feedback: newFeedback });
+                    }
+                });
+
+                if (updates.length === 0) {
+                    alert("Không có thay đổi nào để lưu!");
+                    return;
+                }
+
+                for (const update of updates) {
+                    const docRef = doc(db, 'testHistoryKaiwa', update.docId);
+                    await updateDoc(docRef, { feedback: update.feedback });
+                    // Update fullHistory
+                    const index = fullHistory.findIndex(item => item.id === update.docId);
+                    if (index !== -1) {
+                        fullHistory[index].feedback = update.feedback;
+                    }
+                }
+
+                alert(`Đã lưu ${updates.length} phản hồi thành công!`);
+            } catch (error) {
+                console.error("Lỗi khi lưu phản hồi:", error);
+                let errorMessage = "Đã xảy ra lỗi khi lưu phản hồi!";
+                if (error.code === 'permission-denied') {
+                    errorMessage = "Không có quyền cập nhật dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
+                } else if (error.code === 'unavailable') {
+                    errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
+                }
+                alert(errorMessage);
+            }
+        }
+
         function goBack() {
             window.location.href = 'index.html';
         }
 
-        // Initialize history table
-        document.addEventListener('DOMContentLoaded', loadHistory);
+        // Initialize history table and search
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHistory();
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', () => {
+                loadHistory(searchInput.value.trim());
+            });
+        });
 
         // Expose functions to global scope
+        window.saveAllFeedback = saveAllFeedback;
         window.goBack = goBack;
     </script>
 </body>
