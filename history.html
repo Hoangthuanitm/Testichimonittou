@@ -74,6 +74,12 @@
         .feedback-btn:hover {
             background-color: #2563EB;
         }
+        .save-feedback-btn {
+            background-color: #F59E0B;
+        }
+        .save-feedback-btn:hover {
+            background-color: #D97706;
+        }
         .table-wrapper {
             overflow-x: auto;
             max-width: 100%;
@@ -107,6 +113,16 @@
         th:nth-child(6), td:nth-child(6) { width: 150px; max-width: 150px; }
         th:nth-child(7), td:nth-child(7) { width: 150px; max-width: 150px; }
         th:nth-child(8), td:nth-child(8) { width: 150px; max-width: 150px; }
+        td textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+            max-height: 100px;
+            max-length: 500;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -163,23 +179,6 @@
         .modal-content .cancel-btn:hover {
             background-color: #4B5563;
         }
-        .feedback-table {
-            width: 100%;
-            min-width: 800px;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        .feedback-table th, .feedback-table td {
-            padding: 0.75rem;
-            border: 1px solid #E5E7EB;
-            text-align: left;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
-        .feedback-table th {
-            background-color: #F3F4F6;
-        }
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -212,8 +211,7 @@
             .modal-content h2 {
                 font-size: 1.2rem;
             }
-            .feedback-table th, .feedback-table td {
-                padding: 0.5rem;
+            td textarea {
                 font-size: 0.8rem;
             }
         }
@@ -263,6 +261,7 @@
             <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
             <button onclick="showPasswordModal('feedback')" aria-label="Thêm phản hồi" class="feedback-btn">Phản hồi</button>
             <button onclick="deleteSelectedAnswers()" aria-label="Xóa câu trả lời" class="delete-btn">Xóa</button>
+            <button onclick="saveFeedback()" aria-label="Lưu phản hồi" class="save-feedback-btn" id="save-feedback-btn" style="display: none;">Lưu phản hồi</button>
         </div>
         <div class="table-wrapper">
             <table id="history-table">
@@ -292,30 +291,6 @@
                     <button class="cancel-btn" onclick="closePasswordModal()" aria-label="Hủy">Hủy</button>
                     <button onclick="submitPassword()" aria-label="Xác nhận mật khẩu">Xác nhận</button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Feedback Modal -->
-        <div id="feedback-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeFeedbackModal()">×</span>
-                <h2>Chỉnh sửa phản hồi</h2>
-                <div class="table-wrapper">
-                    <table class="feedback-table">
-                        <thead>
-                            <tr>
-                                <th>Họ và Tên</th>
-                                <th>Lớp</th>
-                                <th>Tên bài</th>
-                                <th>Câu hỏi</th>
-                                <th>Câu trả lời</th>
-                                <th>Phản hồi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="feedback-table-body"></tbody>
-                    </table>
-                </div>
-                <button onclick="submitAllFeedback()" aria-label="Lưu tất cả phản hồi">Lưu tất cả</button>
             </div>
         </div>
     </main>
@@ -361,8 +336,9 @@
 
         // Store full history data
         let fullHistory = [];
-        // Track delete authorization
+        // Track delete and feedback authorization
         let isDeleteAuthorized = false;
+        let isFeedbackEditable = false;
         let passwordModalAction = null;
 
         // Load history with filters
@@ -417,6 +393,9 @@
                     const timestamp = data.timestamp && data.timestamp.toDate
                         ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
                         : 'N/A';
+                    const feedbackContent = isFeedbackEditable
+                        ? `<textarea class="feedback-input" data-doc-id="${sanitizeText(data.id)}" maxlength="500" aria-label="Phản hồi cho ${sanitizeText(data.name || 'học viên')}">${sanitizeText(data.feedback || '')}</textarea>`
+                        : sanitizeText(data.feedback || 'Chưa có phản hồi');
                     row.innerHTML = `
                         <td><input type="checkbox" class="select-row" data-id="${sanitizeText(data.id)}" aria-label="Chọn câu trả lời"></td>
                         <td>${sanitizeText(timestamp)}</td>
@@ -425,7 +404,7 @@
                         <td>${sanitizeText(data.class || 'N/A')}</td>
                         <td>${sanitizeText(data.question || 'N/A')}</td>
                         <td>${sanitizeText(data.answer || 'N/A')}</td>
-                        <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                        <td>${feedbackContent}</td>
                     `;
                     historyTableBody.appendChild(row);
                 });
@@ -462,15 +441,18 @@
         function submitPassword() {
             const password = document.getElementById('password-input').value;
             if (password !== '112') {
-                alert('Mật khẩu không đúng!');
+                alert('Mật khẩu không đúng! Vui lòng thử lại.');
                 return;
             }
             closePasswordModal();
             if (passwordModalAction === 'delete') {
                 isDeleteAuthorized = true;
-                alert('Bạn đã được cấp quyền xóa. Vui lòng chọn câu trả lời và nhấn "Xóa" lại.');
+                alert('Bạn đã được cấp quyền xóa. Vui lòng chọn câu trả lời và nhấn "Xóa".');
             } else if (passwordModalAction === 'feedback') {
-                openFeedbackModal();
+                isFeedbackEditable = true;
+                document.getElementById('save-feedback-btn').style.display = 'inline-block';
+                loadHistory(); // Reload table with editable feedback fields
+                alert('Bạn có thể chỉnh sửa phản hồi trong bảng. Nhấn "Lưu phản hồi" khi hoàn tất.');
             }
         }
 
@@ -487,6 +469,11 @@
                 return;
             }
 
+            if (!db) {
+                alert('Không thể kết nối với cơ sở dữ liệu!');
+                return;
+            }
+
             try {
                 const deletePromises = Array.from(selectedCheckboxes).map(checkbox => {
                     const docId = checkbox.getAttribute('data-id');
@@ -494,7 +481,7 @@
                 });
                 await Promise.all(deletePromises);
                 isDeleteAuthorized = false; // Reset authorization after deletion
-                fullHistory = []; // Clear cache to force reload
+                fullHistory = []; // Clear cache визуализация: to force reload
                 await loadHistory();
                 alert('Xóa câu trả lời thành công!');
             } catch (error) {
@@ -503,42 +490,19 @@
             }
         }
 
-        // Handle "Select All" checkbox
-        function updateSelectAllCheckbox() {
-            const selectAllCheckbox = document.getElementById('select-all');
-            const rowCheckboxes = document.querySelectorAll('.select-row');
-            selectAllCheckbox.checked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
-        }
+        // Save feedback
+        async function saveFeedback() {
+            if (!isFeedbackEditable) {
+                alert('Vui lòng nhập mật khẩu để chỉnh sửa phản hồi!');
+                showPasswordModal('feedback');
+                return;
+            }
 
-        function openFeedbackModal() {
-            const modal = document.getElementById('feedback-modal');
-            const feedbackTableBody = document.getElementById('feedback-table-body');
-            feedbackTableBody.innerHTML = '';
+            if (!db) {
+                alert('Không thể kết nối với cơ sở dữ liệu!');
+                return;
+            }
 
-            fullHistory.forEach(data => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${sanitizeText(data.name || 'N/A')}</td>
-                    <td>${sanitizeText(data.class || 'N/A')}</td>
-                    <td>${sanitizeText(data.lesson || 'N/A')}</td>
-                    <td>${sanitizeText(data.question || 'N/A')}</td>
-                    <td>${sanitizeText(data.answer || 'N/A')}</td>
-                    <td>
-                        <textarea class="feedback-input" data-doc-id="${sanitizeText(data.id)}" placeholder="Nhập phản hồi..." aria-label="Phản hồi cho ${sanitizeText(data.name || 'học viên')}">${sanitizeText(data.feedback || '')}</textarea>
-                    </td>
-                `;
-                feedbackTableBody.appendChild(row);
-            });
-
-            modal.style.display = 'block';
-        }
-
-        function closeFeedbackModal() {
-            const modal = document.getElementById('feedback-modal');
-            modal.style.display = 'none';
-        }
-
-        async function submitAllFeedback() {
             const feedbackInputs = document.querySelectorAll('.feedback-input');
             const updates = [];
 
@@ -551,7 +515,7 @@
             });
 
             if (updates.length === 0) {
-                alert('Vui lòng nhập ít nhất một phản hồi!');
+                alert('Vui lòng nhập ít nhất một phản hồi để lưu!');
                 return;
             }
 
@@ -559,14 +523,22 @@
                 for (const { docId, feedback } of updates) {
                     await updateDoc(doc(db, 'testHistoryKaiwa', docId), { feedback });
                 }
-                closeFeedbackModal();
+                isFeedbackEditable = false;
+                document.getElementById('save-feedback-btn').style.display = 'none';
                 fullHistory = []; // Clear cache to force reload
                 await loadHistory();
-                alert('Lưu tất cả phản hồi thành công!');
+                alert('Lưu phản hồi thành công!');
             } catch (error) {
                 console.error("Lỗi khi lưu phản hồi:", error);
                 alert(`Đã xảy ra lỗi khi lưu phản hồi: ${error.message}`);
             }
+        }
+
+        // Handle "Select All" checkbox
+        function updateSelectAllCheckbox() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const rowCheckboxes = document.querySelectorAll('.select-row');
+            selectAllCheckbox.checked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
         }
 
         function goBack() {
@@ -579,17 +551,24 @@
             const filterInputs = ['filter-date', 'filter-class', 'filter-name', 'filter-lesson'];
             filterInputs.forEach(id => {
                 const input = document.getElementById(id);
-                input.addEventListener('change', loadHistory);
-                input.addEventListener('input', loadHistory);
+                if (input) {
+                    input.addEventListener('change', loadHistory);
+                    input.addEventListener('input', loadHistory);
+                } else {
+                    console.warn(`Element with ID ${id} not found`);
+                }
             });
 
             // Add event listener for "Select All" checkbox
-            document.getElementById('select-all').addEventListener('change', (e) => {
-                const isChecked = e.target.checked;
-                document.querySelectorAll('.select-row').forEach(cb => {
-                    cb.checked = isChecked;
+            const selectAllCheckbox = document.getElementById('select-all');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', (e) => {
+                    const isChecked = e.target.checked;
+                    document.querySelectorAll('.select-row').forEach(cb => {
+                        cb.checked = isChecked;
+                    });
                 });
-            });
+            }
 
             // Update "Select All" state when individual checkboxes change
             document.addEventListener('change', (e) => {
@@ -599,11 +578,14 @@
             });
 
             // Add Enter key support for password submission
-            document.getElementById('password-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    submitPassword();
-                }
-            });
+            const passwordInput = document.getElementById('password-input');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitPassword();
+                    }
+                });
+            }
         });
 
         // Expose functions to global scope
@@ -612,9 +594,7 @@
         window.showPasswordModal = showPasswordModal;
         window.closePasswordModal = closePasswordModal;
         window.submitPassword = submitPassword;
-        window.openFeedbackModal = openFeedbackModal;
-        window.closeFeedbackModal = closeFeedbackModal;
-        window.submitAllFeedback = submitAllFeedback;
+        window.saveFeedback = saveFeedback;
     </script>
 </body>
 </html>
