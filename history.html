@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lịch sử kiểm tra - Samurai Japanese Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -108,6 +110,77 @@
         th:nth-child(6), td:nth-child(6) { width: 150px; max-width: 150px; } /* Câu trả lời */
         th:nth-child(7), td:nth-child(7) { width: 150px; max-width: 150px; } /* Phản hồi */
 
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #FFFFFF;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1000px; /* Increased for wider table */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #1E3A8A;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            min-width: 600px; /* Ensure table is wide enough */
+            overflow-x: auto; /* Enable horizontal scrolling for table */
+        }
+
+        .stats-table th, .stats-table td {
+            padding: 0.75rem;
+            border: 1px solid #E5E7EB;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .stats-table th {
+            background-color: #F3F4F6;
+        }
+
+        .chart-container {
+            position: relative;
+            margin: 2rem 0;
+            height: 300px;
+            min-width: 600px; /* Ensure chart is wide enough */
+        }
+
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -136,6 +209,25 @@
                 padding: 0.5rem;
                 font-size: 0.9rem;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1rem;
+            }
+
+            .modal-content h2 {
+                font-size: 1.2rem;
+            }
+
+            .stats-table th, .stats-table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .chart-container {
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -147,6 +239,7 @@
         <div class="controls">
             <label for="search-input">Tìm kiếm:</label>
             <input type="text" id="search-input" placeholder="Nhập thông tin để tìm kiếm...">
+            <button onclick="openDashboard()" aria-label="Xem báo cáo thống kê">Báo cáo</button>
             <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
         </div>
         <div class="table-wrapper">
@@ -164,6 +257,30 @@
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
+
+        <!-- Dashboard Modal -->
+        <div id="dashboard-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeDashboard()">×</span>
+                <h2>Báo cáo thống kê</h2>
+                <div class="table-wrapper">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Lớp</th>
+                                <th>Tên bài</th>
+                                <th>Ngày làm bài</th>
+                                <th>Số lượng học viên</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats-table-body"></tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="test-chart"></canvas>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
@@ -210,7 +327,7 @@
         // Store full history data
         let fullHistory = [];
 
-        // Load history
+        // Load history with 6-month filter
         async function loadHistory(searchTerm = '') {
             const historyTableBody = document.querySelector("#history-table tbody");
             historyTableBody.innerHTML = "";
@@ -226,6 +343,14 @@
                     const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
                     const querySnapshot = await getDocs(q);
                     fullHistory = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                    // Filter out entries older than 6 months
+                    const cutoffDate = new Date();
+                    cutoffDate.setMonth(cutoffDate.getMonth() - 6); // 6 months ago from May 12, 2025
+                    fullHistory = fullHistory.filter(item => {
+                        const timestamp = item.timestamp && item.timestamp.toDate ? item.timestamp.toDate() : null;
+                        return timestamp && timestamp >= cutoffDate;
+                    });
                 }
 
                 const filteredHistory = searchTerm
@@ -275,6 +400,119 @@
             }
         }
 
+        // Chart instance to manage lifecycle
+        let testChart = null;
+
+        function openDashboard() {
+            const modal = document.getElementById('dashboard-modal');
+            const statsTableBody = document.getElementById('stats-table-body');
+
+            // Calculate unique student counts by class, lesson, and date
+            const testCounts = fullHistory.reduce((acc, item) => {
+                const className = item.class || 'Không xác định';
+                const lesson = item.lesson || 'Không xác định';
+                const date = item.timestamp && item.timestamp.toDate
+                    ? item.timestamp.toDate().toLocaleDateString('vi-VN')
+                    : 'N/A';
+                const name = item.name || 'Không xác định';
+                const key = `${className} - ${lesson} - ${date}`;
+
+                if (!acc[key]) {
+                    acc[key] = new Set();
+                }
+                acc[key].add(name);
+                return acc;
+            }, {});
+
+            // Convert Sets to counts
+            const testCountsWithSizes = {};
+            for (const [key, nameSet] of Object.entries(testCounts)) {
+                testCountsWithSizes[key] = nameSet.size;
+            }
+
+            // Populate stats table
+            statsTableBody.innerHTML = '';
+            for (const [key, count] of Object.entries(testCountsWithSizes)) {
+                const [className, lesson, date] = key.split(' - ');
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sanitizeText(className)}</td>
+                    <td>${sanitizeText(lesson)}</td>
+                    <td>${sanitizeText(date)}</td>
+                    <td>${count}</td>
+                `;
+                statsTableBody.appendChild(row);
+            }
+
+            // Prepare data for Chart.js
+            const labels = Object.keys(testCountsWithSizes);
+            const data = Object.values(testCountsWithSizes);
+
+            // Destroy previous chart if exists
+            if (testChart) {
+                testChart.destroy();
+            }
+
+            // Create bar chart
+            const ctx = document.getElementById('test-chart').getContext('2d');
+            testChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số lượng học viên',
+                        data: data,
+                        backgroundColor: 'rgba(30, 58, 138, 0.6)', // Match header color
+                        borderColor: 'rgba(30, 58, 138, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Số lượng học viên'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Lớp - Tên bài - Ngày làm bài'
+                            },
+                            ticks: {
+                                maxRotation: 45, // Rotate labels for readability
+                                minRotation: 45
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw} học viên`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Show modal
+            modal.style.display = 'block';
+        }
+
+        function closeDashboard() {
+            const modal = document.getElementById('dashboard-modal');
+            modal.style.display = 'none';
+        }
+
         function goBack() {
             window.location.href = 'index.html';
         }
@@ -289,6 +527,8 @@
         });
 
         // Expose functions to global scope
+        window.openDashboard = openDashboard;
+        window.closeDashboard = closeDashboard;
         window.goBack = goBack;
     </script>
 </body>
