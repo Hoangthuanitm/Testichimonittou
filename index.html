@@ -290,7 +290,8 @@
             ],
             5: [
                 "どこへ行きますか？",
-                "きのうどこへ行きましたか？6. きのう何時まで勉強しましたか？",
+                "きのうどこへ行きましたか？",
+                "きのう何時まで勉強しましたか？",
                 "朝何時から何時まで勉強しますか？",
                 "昼から夕方まで何をしますか？"
             ],
@@ -827,7 +828,6 @@
                         feedback: "",
                         timestamp: serverTimestamp()
                     });
-                    alert(`Câu trả lời của bạn: ${sanitizeText(answerInput)}`);
                     if (currentQuestionIndex < questions[currentLesson].length - 1) {
                         currentQuestionIndex++;
                         document.getElementById('answer-input').value = "";
