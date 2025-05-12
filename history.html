@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử kiểm tra - Samurai Japanese Center</title>
+    <title>Samurai Japanese Center - Lịch sử kiểm tra</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -11,43 +11,80 @@
             margin: 0;
             padding: 0;
             background-color: #F9FAFB;
-            overflow-x: hidden;
         }
+
         header {
             background-color: #1E3A8A;
             color: white;
             text-align: center;
             padding: 1.5rem;
         }
+
         header h1 {
             margin: 0;
             font-size: 2rem;
             font-weight: 700;
         }
+
         main {
-            max-width: 100%;
+            max-width: 900px;
             margin: 2rem auto;
             padding: 0 1rem;
-            box-sizing: border-box;
         }
-        .controls {
+
+        .filter-section {
+            background-color: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            gap: 1rem;
         }
-        .controls label {
+
+        .filter-section label {
             font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
         }
-        .controls input, .controls select {
+
+        .filter-section input,
+        .filter-section select {
+            width: 100%;
+            max-width: 200px;
             padding: 0.75rem;
             border: 1px solid #D1D5DB;
             border-radius: 5px;
             font-size: 1rem;
-            flex-grow: 1;
-            min-width: 150px;
+            box-sizing: border-box;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            background-color: #F3F4F6;
+            font-weight: 500;
+        }
+
+        .checkbox-column {
+            width: 50px;
+            text-align: center;
+        }
+
         button {
             background-color: #10B981;
             color: white;
@@ -58,71 +95,22 @@
             font-size: 1rem;
             font-weight: 500;
             transition: background-color 0.3s;
+            margin-top: 1rem;
         }
+
         button:hover {
             background-color: #059669;
         }
+
         .delete-btn {
             background-color: #EF4444;
         }
+
         .delete-btn:hover {
             background-color: #DC2626;
         }
-        .feedback-btn {
-            background-color: #3B82F6;
-        }
-        .feedback-btn:hover {
-            background-color: #2563EB;
-        }
-        .save-feedback-btn {
-            background-color: #F59E0B;
-        }
-        .save-feedback-btn:hover {
-            background-color: #D97706;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-            max-width: 100%;
-        }
-        table {
-            width: 100%;
-            min-width: 800px;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            background-color: #FFFFFF;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E5E7EB;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-        }
-        th {
-            background-color: #F3F4F6;
-            font-weight: 500;
-        }
-        th:nth-child(1), td:nth-child(1) { width: 50px; max-width: 50px; text-align: center; }
-        th:nth-child(2), td:nth-child(2) { width: 120px; max-width: 120px; }
-        th:nth-child(3), td:nth-child(3) { width: 80px; max-width: 80px; }
-        th:nth-child(4), td:nth-child(4) { width: 100px; max-width: 100px; }
-        th:nth-child(5), td:nth-child(5) { width: 80px; max-width: 80px; }
-        th:nth-child(6), td:nth-child(6) { width: 150px; max-width: 150px; }
-        th:nth-child(7), td:nth-child(7) { width: 150px; max-width: 150px; }
-        th:nth-child(8), td:nth-child(8) { width: 150px; max-width: 150px; }
-        td textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 5px;
-            font-size: 1rem;
-            resize: vertical;
-            max-height: 100px;
-            max-length: 500;
-        }
+
+        /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
@@ -131,36 +119,34 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
             z-index: 1000;
-            overflow-y: auto;
         }
+
         .modal-content {
             background-color: #FFFFFF;
-            margin: 15% auto;
             padding: 2rem;
             border-radius: 8px;
             width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            position: relative;
+            max-width: 400px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
         }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         .modal-content h2 {
-            margin-top: 0;
+            margin: 0 0 1rem;
             font-size: 1.5rem;
+            font-weight: 700;
             color: #1E3A8A;
         }
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-        .close-btn:hover {
-            color: #000;
-        }
-        .modal-content input[type="password"] {
+
+        .modal-content input {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #D1D5DB;
@@ -168,17 +154,26 @@
             font-size: 1rem;
             margin-bottom: 1rem;
         }
-        .modal-content .btn-group {
+
+        .modal-buttons {
             display: flex;
-            gap: 1rem;
             justify-content: flex-end;
+            gap: 1rem;
         }
-        .modal-content .cancel-btn {
-            background-color: #6B7280;
+
+        .modal-buttons button {
+            padding: 0.5rem 1rem;
+            margin: 0;
         }
-        .modal-content .cancel-btn:hover {
-            background-color: #4B5563;
+
+        .modal-buttons .cancel-btn {
+            background-color: #D1D5DB;
         }
+
+        .modal-buttons .cancel-btn:hover {
+            background-color: #B0B7C0;
+        }
+
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -186,88 +181,88 @@
             color: white;
             font-size: 0.9rem;
         }
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .controls input, .controls select, .controls button {
-                width: 100%;
-                box-sizing: border-box;
-                min-width: unset;
-            }
-            th, td {
-                padding: 0.5rem;
-                font-size: 0.9rem;
-            }
-            .modal-content {
-                width: 95%;
-                margin: 20% auto;
-                padding: 1rem;
-            }
-            .modal-content h2 {
-                font-size: 1.2rem;
-            }
-            td textarea {
-                font-size: 0.8rem;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Lịch sử kiểm tra - Samurai Japanese Center</h1>
+        <h1>Samurai Japanese Center - Lịch sử kiểm tra</h1>
     </header>
     <main>
-        <div class="controls">
-            <label for="filter-date">Ngày:</label>
-            <input type="date" id="filter-date" aria-label="Lọc theo ngày">
-            <label for="filter-class">Lớp:</label>
-            <input type="text" id="filter-class" placeholder="Nhập lớp..." aria-label="Lọc theo lớp">
-            <label for="filter-name">Tên:</label>
-            <input type="text" id="filter-name" placeholder="Nhập tên..." aria-label="Lọc theo tên">
-            <label for="filter-lesson">Bài:</label>
-            <select id="filter-lesson" aria-label="Lọc theo bài">
-                <option value="">Tất cả</option>
-                <option value="1">Bài 1</option>
-                <option value="2">Bài 2</option>
-                <option value="3">Bài 3</option>
-                <option value="4">Bài 4</option>
-                <option value="5">Bài 5</option>
-                <option value="6">Bài 6</option>
-                <option value="7">Bài 7</option>
-                <option value="8">Bài 8</option>
-                <option value="9">Bài 9</option>
-                <option value="10">Bài 10</option>
-                <option value="11">Bài 11</option>
-                <option value="12">Bài 12</option>
-                <option value="13">Bài 13</option>
-                <option value="14">Bài 14</option>
-                <option value="15">Bài 15</option>
-                <option value="16">Bài 16</option>
-                <option value="17">Bài 17</option>
-                <option value="18">Bài 18</option>
-                <option value="19">Bài 19</option>
-                <option value="20">Bài 20</option>
-                <option value="21">Bài 21</option>
-                <option value="22">Bài 22</option>
-                <option value="23">Bài 23</option>
-                <option value="24">Bài 24</option>
-                <option value="25">Bài 25</option>
-            </select>
-            <button onclick="goBack()" aria-label="Quay lại trang chính">Quay lại</button>
-            <button onclick="showPasswordModal('feedback')" aria-label="Thêm phản hồi" class="feedback-btn">Phản hồi</button>
-            <button onclick="deleteSelectedAnswers()" aria-label="Xóa câu trả lời" class="delete-btn">Xóa</button>
-            <button onclick="saveFeedback()" aria-label="Lưu phản hồi" class="save-feedback-btn" id="save-feedback-btn" style="display: none;">Lưu phản hồi</button>
-        </div>
-        <div class="table-wrapper">
+        <section class="filter-section">
+            <div>
+                <label for="filter-date">Ngày:</label>
+                <input type="date" id="filter-date">
+            </div>
+            <div>
+                <label for="filter-class">Lớp:</label>
+                <input type="text" id="filter-class" placeholder="Nhập lớp">
+            </div>
+            <div>
+                <label for="filter-name">Họ và Tên:</label>
+                <input type="text" id="filter-name" placeholder="Nhập họ và tên">
+            </div>
+            <div>
+                <label for="filter-lesson">Bài:</label>
+                <select id="filter-lesson">
+                    <option value="">-- Tất cả --</option>
+                    <option value="1">Bài 1</option>
+                    <option value="3">Bài 3</option>
+                    <option value="4">Bài 4</option>
+                    <option value="5">Bài 5</option>
+                    <option value="6">Bài 6</option>
+                    <option value="7">Bài 7</option>
+                    <option value="8">Bài 8</option>
+                    <option value="9">Bài 9</option>
+                    <option value="10">Bài 10</option>
+                    <option value="11">Bài 11</option>
+                    <option value="12">Bài 12</option>
+                    <option value="13">Bài 13</option>
+                    <option value="14">Bài 14</option>
+                    <option value="15">Bài 15</option>
+                    <option value="16">Bài 16</option>
+                    <option value="17">Bài 17</option>
+                    <option value="18">Bài 18</option>
+                    <option value="19">Bài 19</option>
+                    <option value="20">Bài 20</option>
+                    <option value="21">Bài 21</option>
+                    <option value="22">Bài 22</option>
+                    <option value="23">Bài 23</option>
+                    <option value="24">Bài 24</option>
+                    <option value="25">Bài 25</option>
+                    <option value="26">Bài 26</option>
+                    <option value="27">Bài 27</option>
+                    <option value="28">Bài 28</option>
+                    <option value="29">Bài 29</option>
+                    <option value="30">Bài 30</option>
+                    <option value="31">Bài 31</option>
+                    <option value="32">Bài 32</option>
+                    <option value="33">Bài 33</option>
+                    <option value="34">Bài 34</option>
+                    <option value="35">Bài 35</option>
+                    <option value="36">Bài 36</option>
+                    <option value="37">Bài 37</option>
+                    <option value="38">Bài 38</option>
+                    <option value="39">Bài 39</option>
+                    <option value="40">Bài 40</option>
+                    <option value="41">Bài 41</option>
+                    <option value="42">Bài 42</option>
+                    <option value="43">Bài 43</option>
+                    <option value="44">Bài 44</option>
+                    <option value="45">Bài 45</option>
+                    <option value="46">Bài 46</option>
+                    <option value="47">Bài 47</option>
+                    <option value="48">Bài 48</option>
+                    <option value="49">Bài 49</option>
+                    <option value="50">Bài 50</option>
+                </select>
+            </div>
+        </section>
+        <section>
+            <button class="delete-btn" id="delete-btn">Xóa</button>
             <table id="history-table">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="select-all" aria-label="Chọn tất cả"></th>
+                        <th class="checkbox-column"><input type="checkbox" id="select-all"></th>
                         <th>Thời gian</th>
                         <th>Tên bài</th>
                         <th>Họ và Tên</th>
@@ -279,29 +274,26 @@
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
-
-        <!-- Password Modal -->
-        <div id="password-modal" class="modal">
+        </section>
+        <div class="modal" id="password-modal">
             <div class="modal-content">
-                <span class="close-btn" onclick="closePasswordModal()">×</span>
                 <h2>Nhập mật khẩu</h2>
-                <input type="password" id="password-input" placeholder="Mật khẩu..." aria-label="Nhập mật khẩu">
-                <div class="btn-group">
-                    <button class="cancel-btn" onclick="closePasswordModal()" aria-label="Hủy">Hủy</button>
-                    <button onclick="submitPassword()" aria-label="Xác nhận mật khẩu">Xác nhận</button>
+                <input type="password" id="password-input" placeholder="Nhập mật khẩu">
+                <div class="modal-buttons">
+                    <button class="cancel-btn" id="cancel-btn">Hủy</button>
+                    <button id="confirm-delete-btn">Xác nhận</button>
                 </div>
             </div>
         </div>
     </main>
     <footer>
-        <p>Tài liệu kiểm tra © <span id="current-year"></span> thiết kế bởi Thuận</p>
+        <p>Tài liệu kiểm tra © 2025 thiết kế bởi Thuận</p>
     </footer>
 
     <script type="module">
         // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, orderBy, query, deleteDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -324,92 +316,69 @@
             alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng kiểm tra kết nối mạng hoặc cấu hình Firebase!");
         }
 
-        // Set dynamic year in footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
         // Sanitize text to prevent XSS
         function sanitizeText(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+            return String(text).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"').replace(/'/g, '');
         }
 
-        // Store full history data
-        let fullHistory = [];
-        // Track delete and feedback authorization
-        let isDeleteAuthorized = false;
-        let isFeedbackEditable = false;
-        let passwordModalAction = null;
-
-        // Load history with filters
+        // Load history
         async function loadHistory() {
             const historyTableBody = document.querySelector("#history-table tbody");
             historyTableBody.innerHTML = "";
-
-            const filterDate = document.getElementById('filter-date').value;
-            const filterClass = document.getElementById('filter-class').value.trim().toLowerCase();
-            const filterName = document.getElementById('filter-name').value.trim().toLowerCase();
-            const filterLesson = document.getElementById('filter-lesson').value;
+            const filterDate = document.getElementById("filter-date").value;
+            const filterClass = document.getElementById("filter-class").value.trim().toLowerCase();
+            const filterName = document.getElementById("filter-name").value.trim().toLowerCase();
+            const filterLesson = document.getElementById("filter-lesson").value;
 
             if (!db) {
-                console.error("Firestore chưa được khởi tạo.");
                 alert("Không thể tải lịch sử: Kết nối cơ sở dữ liệu thất bại!");
                 return;
             }
 
             try {
-                if (fullHistory.length === 0) {
-                    const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
-                    const querySnapshot = await getDocs(q);
-                    fullHistory = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
+                const querySnapshot = await getDocs(q);
 
-                    // Filter out entries older than 6 months
-                    const cutoffDate = new Date();
-                    cutoffDate.setMonth(cutoffDate.getMonth() - 6);
-                    fullHistory = fullHistory.filter(item => {
-                        const timestamp = item.timestamp && item.timestamp.toDate ? item.timestamp.toDate() : null;
-                        return timestamp && timestamp >= cutoffDate;
-                    });
-                }
-
-                const filteredHistory = fullHistory.filter(item => {
-                    const timestamp = item.timestamp && item.timestamp.toDate
-                        ? item.timestamp.toDate().toLocaleDateString('vi-VN')
-                        : '';
-                    const matchesDate = !filterDate || timestamp === new Date(filterDate).toLocaleDateString('vi-VN');
-                    const matchesClass = !filterClass || (item.class || '').toLowerCase().includes(filterClass);
-                    const matchesName = !filterName || (item.name || '').toLowerCase().includes(filterName);
-                    const matchesLesson = !filterLesson || item.lesson === filterLesson;
-                    return matchesDate && matchesClass && matchesName && matchesLesson;
-                });
-
-                if (filteredHistory.length === 0) {
-                    historyTableBody.innerHTML = '<tr><td colspan="8">Không tìm thấy kết quả.</td></tr>';
+                if (querySnapshot.empty) {
+                    historyTableBody.innerHTML = '<tr><td colspan="8">Chưa có lịch sử trả lời.</td></tr>';
                     return;
                 }
 
-                filteredHistory.forEach(data => {
-                    const row = document.createElement('tr');
+                let hasResults = false;
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
                     const timestamp = data.timestamp && data.timestamp.toDate
-                        ? new Date(data.timestamp.toDate()).toLocaleString('vi-VN')
-                        : 'N/A';
-                    const feedbackContent = isFeedbackEditable
-                        ? `<textarea class="feedback-input" data-doc-id="${sanitizeText(data.id)}" maxlength="500" aria-label="Phản hồi cho ${sanitizeText(data.name || 'học viên')}">${sanitizeText(data.feedback || '')}</textarea>`
-                        : sanitizeText(data.feedback || 'Chưa có phản hồi');
-                    row.innerHTML = `
-                        <td><input type="checkbox" class="select-row" data-id="${sanitizeText(data.id)}" aria-label="Chọn câu trả lời"></td>
-                        <td>${sanitizeText(timestamp)}</td>
-                        <td>${sanitizeText(data.lesson || 'N/A')}</td>
-                        <td>${sanitizeText(data.name || 'N/A')}</td>
-                        <td>${sanitizeText(data.class || 'N/A')}</td>
-                        <td>${sanitizeText(data.question || 'N/A')}</td>
-                        <td>${sanitizeText(data.answer || 'N/A')}</td>
-                        <td>${feedbackContent}</td>
-                    `;
-                    historyTableBody.appendChild(row);
+                        ? new Date(data.timestamp.toDate())
+                        : null;
+                    const dateStr = timestamp ? timestamp.toISOString().split('T')[0] : '';
+                    const matchesDate = !filterDate || dateStr === filterDate;
+                    const matchesClass = !filterClass || (data.class && data.class.toLowerCase().includes(filterClass));
+                    const matchesName = !filterName || (data.name && data.name.toLowerCase().includes(filterName));
+                    const matchesLesson = !filterLesson || (data.lesson && data.lesson === filterLesson);
+
+                    if (matchesDate && matchesClass && matchesName && matchesLesson) {
+                        hasResults = true;
+                        const row = document.createElement('tr');
+                        row.setAttribute('data-id', doc.id);
+                        row.innerHTML = `
+                            <td class="checkbox-column"><input type="checkbox" class="row-checkbox"></td>
+                            <td>${timestamp ? timestamp.toLocaleString('vi-VN') : 'N/A'}</td>
+                            <td>${sanitizeText(data.lesson || 'N/A')}</td>
+                            <td>${sanitizeText(data.name || 'N/A')}</td>
+                            <td>${sanitizeText(data.class || 'N/A')}</td>
+                            <td>${sanitizeText(data.question || 'N/A')}</td>
+                            <td>${sanitizeText(data.answer || 'N/A')}</td>
+                            <td>${sanitizeText(data.feedback || 'Chưa có phản hồi')}</td>
+                        `;
+                        historyTableBody.appendChild(row);
+                    }
                 });
 
-                // Update "Select All" checkbox state
+                if (!hasResults) {
+                    historyTableBody.innerHTML = '<tr><td colspan="8">Không tìm thấy kết quả phù hợp.</td></tr>';
+                }
+
+                // Update select-all checkbox state
                 updateSelectAllCheckbox();
             } catch (error) {
                 console.error("Lỗi khi tải lịch sử:", error);
@@ -423,178 +392,108 @@
             }
         }
 
-        // Password Modal Functions
-        function showPasswordModal(action) {
-            passwordModalAction = action;
-            const modal = document.getElementById('password-modal');
-            document.getElementById('password-input').value = '';
-            modal.style.display = 'block';
-            document.getElementById('password-input').focus();
+        // Update select-all checkbox state
+        function updateSelectAllCheckbox() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            selectAll.checked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
         }
 
-        function closePasswordModal() {
+        // Handle select-all checkbox
+        function handleSelectAll() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        }
+
+        // Show password modal
+        function showPasswordModal() {
+            const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Vui lòng chọn ít nhất một mục để xóa!');
+                return;
+            }
+            const modal = document.getElementById('password-modal');
+            const passwordInput = document.getElementById('password-input');
+            passwordInput.value = '';
+            modal.style.display = 'flex';
+        }
+
+        // Hide password modal
+        function hidePasswordModal() {
             const modal = document.getElementById('password-modal');
             modal.style.display = 'none';
-            passwordModalAction = null;
         }
 
-        function submitPassword() {
-            const password = document.getElementById('password-input').value;
-            if (password !== '112') {
-                alert('Mật khẩu không đúng! Vui lòng thử lại.');
-                return;
-            }
-            closePasswordModal();
-            if (passwordModalAction === 'delete') {
-                isDeleteAuthorized = true;
-                alert('Bạn đã được cấp quyền xóa. Vui lòng chọn câu trả lời và nhấn "Xóa".');
-            } else if (passwordModalAction === 'feedback') {
-                isFeedbackEditable = true;
-                document.getElementById('save-feedback-btn').style.display = 'inline-block';
-                loadHistory(); // Reload table with editable feedback fields
-                alert('Bạn có thể chỉnh sửa phản hồi trong bảng. Nhấn "Lưu phản hồi" khi hoàn tất.');
-            }
-        }
-
-        // Delete selected answers
-        async function deleteSelectedAnswers() {
-            if (!isDeleteAuthorized) {
-                showPasswordModal('delete');
+        // Delete selected history
+        async function deleteHistory() {
+            const passwordInput = document.getElementById('password-input').value;
+            if (passwordInput !== '112') {
+                alert('Mật khẩu không đúng!');
                 return;
             }
 
-            const selectedCheckboxes = document.querySelectorAll('.select-row:checked');
+            if (!db) {
+                alert('Không thể xóa: Kết nối cơ sở dữ liệu thất bại!');
+                return;
+            }
+
+            const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
             if (selectedCheckboxes.length === 0) {
-                alert('Vui lòng chọn ít nhất một câu trả lời để xóa!');
-                return;
-            }
-
-            if (!db) {
-                alert('Không thể kết nối với cơ sở dữ liệu!');
+                alert('Không có mục nào được chọn để xóa!');
                 return;
             }
 
             try {
-                const deletePromises = Array.from(selectedCheckboxes).map(checkbox => {
-                    const docId = checkbox.getAttribute('data-id');
-                    return deleteDoc(doc(db, 'testHistoryKaiwa', docId));
-                });
-                await Promise.all(deletePromises);
-                isDeleteAuthorized = false; // Reset authorization after deletion
-                fullHistory = []; // Clear cache визуализация: to force reload
-                await loadHistory();
-                alert('Xóa câu trả lời thành công!');
+                for (const checkbox of selectedCheckboxes) {
+                    const row = checkbox.closest('tr');
+                    const docId = row.getAttribute('data-id');
+                    await deleteDoc(doc(db, 'testHistoryKaiwa', docId));
+                }
+                alert('Xóa dữ liệu thành công!');
+                hidePasswordModal();
+                loadHistory();
             } catch (error) {
-                console.error("Lỗi khi xóa câu trả lời:", error);
-                alert(`Đã xảy ra lỗi khi xóa: ${error.message}`);
-            }
-        }
-
-        // Save feedback
-        async function saveFeedback() {
-            if (!isFeedbackEditable) {
-                alert('Vui lòng nhập mật khẩu để chỉnh sửa phản hồi!');
-                showPasswordModal('feedback');
-                return;
-            }
-
-            if (!db) {
-                alert('Không thể kết nối với cơ sở dữ liệu!');
-                return;
-            }
-
-            const feedbackInputs = document.querySelectorAll('.feedback-input');
-            const updates = [];
-
-            feedbackInputs.forEach(input => {
-                const docId = input.getAttribute('data-doc-id');
-                const feedback = input.value.trim();
-                if (feedback) {
-                    updates.push({ docId, feedback });
+                console.error('Lỗi khi xóa dữ liệu:', error);
+                let errorMessage = 'Đã xảy ra lỗi khi xóa dữ liệu!';
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Không có quyền xóa dữ liệu. Vui lòng kiểm tra cấu hình Firestore!';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!';
                 }
-            });
-
-            if (updates.length === 0) {
-                alert('Vui lòng nhập ít nhất một phản hồi để lưu!');
-                return;
-            }
-
-            try {
-                for (const { docId, feedback } of updates) {
-                    await updateDoc(doc(db, 'testHistoryKaiwa', docId), { feedback });
-                }
-                isFeedbackEditable = false;
-                document.getElementById('save-feedback-btn').style.display = 'none';
-                fullHistory = []; // Clear cache to force reload
-                await loadHistory();
-                alert('Lưu phản hồi thành công!');
-            } catch (error) {
-                console.error("Lỗi khi lưu phản hồi:", error);
-                alert(`Đã xảy ra lỗi khi lưu phản hồi: ${error.message}`);
+                alert(errorMessage);
             }
         }
 
-        // Handle "Select All" checkbox
-        function updateSelectAllCheckbox() {
-            const selectAllCheckbox = document.getElementById('select-all');
-            const rowCheckboxes = document.querySelectorAll('.select-row');
-            selectAllCheckbox.checked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
-        }
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterDate = document.getElementById('filter-date');
+            const filterClass = document.getElementById('filter-class');
+            const filterName = document.getElementById('filter-name');
+            const filterLesson = document.getElementById('filter-lesson');
+            const deleteBtn = document.getElementById('delete-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+            const selectAll = document.getElementById('select-all');
 
-        function goBack() {
-            window.location.href = 'index.html';
-        }
+            filterDate.addEventListener('change', loadHistory);
+            filterClass.addEventListener('input', loadHistory);
+            filterName.addEventListener('input', loadHistory);
+            filterLesson.addEventListener('change', loadHistory);
+            deleteBtn.addEventListener('click', showPasswordModal);
+            cancelBtn.addEventListener('click', hidePasswordModal);
+            confirmDeleteBtn.addEventListener('click', deleteHistory);
+            selectAll.addEventListener('change', handleSelectAll);
 
-        // Initialize history table and filters
-        document.addEventListener('DOMContentLoaded', () => {
-            loadHistory();
-            const filterInputs = ['filter-date', 'filter-class', 'filter-name', 'filter-lesson'];
-            filterInputs.forEach(id => {
-                const input = document.getElementById(id);
-                if (input) {
-                    input.addEventListener('change', loadHistory);
-                    input.addEventListener('input', loadHistory);
-                } else {
-                    console.warn(`Element with ID ${id} not found`);
-                }
-            });
-
-            // Add event listener for "Select All" checkbox
-            const selectAllCheckbox = document.getElementById('select-all');
-            if (selectAllCheckbox) {
-                selectAllCheckbox.addEventListener('change', (e) => {
-                    const isChecked = e.target.checked;
-                    document.querySelectorAll('.select-row').forEach(cb => {
-                        cb.checked = isChecked;
-                    });
-                });
-            }
-
-            // Update "Select All" state when individual checkboxes change
-            document.addEventListener('change', (e) => {
-                if (e.target.classList.contains('select-row')) {
+            // Update select-all checkbox when individual checkboxes change
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('row-checkbox')) {
                     updateSelectAllCheckbox();
                 }
             });
 
-            // Add Enter key support for password submission
-            const passwordInput = document.getElementById('password-input');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        submitPassword();
-                    }
-                });
-            }
+            loadHistory(); // Initial load
         });
-
-        // Expose functions to global scope
-        window.goBack = goBack;
-        window.deleteSelectedAnswers = deleteSelectedAnswers;
-        window.showPasswordModal = showPasswordModal;
-        window.closePasswordModal = closePasswordModal;
-        window.submitPassword = submitPassword;
-        window.saveFeedback = saveFeedback;
     </script>
 </body>
 </html>
