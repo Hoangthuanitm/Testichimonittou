@@ -6,92 +6,82 @@
     <title>Samurai Japanese Center - Kiểm tra Kaiwa</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1E3A8A;
-            --success: #10B981;
-            --info: #3B82F6;
-            --gray: #6B7280;
-            --light: #F9FAFB;
-            --white: #FFFFFF;
-            --border: #D1D5DB;
-        }
-        * { box-sizing: border-box; }
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--light);
-            color: #1F2937;
+            background-color: #F9FAFB;
         }
+
         header {
-            background-color: var(--primary);
+            background-color: #1E3A8A;
             color: white;
             text-align: center;
             padding: 1.5rem;
         }
+
         header h1 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
         }
+
         main {
             max-width: 900px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
+
         section {
             margin-bottom: 2rem;
         }
-        h2 {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-top: 0;
-        }
+
         label {
             font-weight: 500;
             display: block;
             margin-bottom: 0.5rem;
-            color: #374151;
         }
+
         input, select, textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid var(--border);
+            border: 1px solid #D1D5DB;
             border-radius: 5px;
             font-size: 1rem;
-            transition: border 0.2s;
+            box-sizing: border-box;
         }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
-        }
+
         select:disabled {
             background-color: #E5E7EB;
             cursor: not-allowed;
-            opacity: 0.7;
         }
+
+        select:not(:disabled) {
+            background-color: #FFFFFF;
+            cursor: pointer;
+        }
+
         #question-container {
-            background-color: var(--white);
+            background-color: #FFFFFF;
             padding: 1.5rem;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         #current-question {
             font-size: 1.25rem;
             margin-bottom: 1rem;
             font-weight: 500;
-            line-height: 1.6;
         }
+
         #question-progress {
             font-style: italic;
-            color: var(--gray);
+            color: #6B7280;
             margin-bottom: 1rem;
         }
-        button, .btn-link {
-            display: inline-block;
-            background-color: var(--success);
+
+        button {
+            background-color: #10B981;
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
@@ -99,38 +89,36 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 500;
-            text-decoration: none;
-            text-align: center;
             transition: background-color 0.3s;
             margin-right: 1rem;
             margin-top: 1rem;
         }
-        button:hover, .btn-link:hover {
+
+        button:hover {
             background-color: #059669;
         }
+
         button:disabled {
             background-color: #D1D5DB;
             cursor: not-allowed;
         }
-        .btn-link {
-            background-color: var(--info);
-        }
-        .btn-link:hover {
-            background-color: #2563EB;
-        }
+
         footer {
             text-align: center;
             padding: 1.5rem;
-            background-color: var(--primary);
+            background-color: #1E3A8A;
             color: white;
             font-size: 0.9rem;
-            margin-top: 3rem;
         }
-        ruby { ruby-align: center; }
-        rt { font-size: 0.6em; color: #555; }
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            button, .btn-link { width: 100%; margin-right: 0; }
+
+        /* Furigana styling */
+        ruby {
+            ruby-align: center;
+        }
+
+        rt {
+            font-size: 0.6em;
+            color: #555;
         }
     </style>
 </head>
@@ -186,32 +174,32 @@
                 <option value="35">Bài 35</option>
             </select>
             <div>
-                <button id="start-test-btn">Bắt đầu kiểm tra</button>
-                <a href="history.html" id="show-history-btn" class="btn-link" target="_blank">
-                    Lịch sử kiểm tra
-                </a>
+                <button id="start-test-btn" aria-label="Bắt đầu kiểm tra">Bắt đầu kiểm tra</button>
+                <button id="show-history-btn" aria-label="Xem lịch sử kiểm tra">Lịch sử kiểm tra</button>
             </div>
         </section>
-        <section id="question-container">
+        <section id="question-container" style="display: none;">
             <h2>Câu hỏi</h2>
             <div id="current-question"></div>
             <div id="question-progress"></div>
-            <textarea id="answer-input" placeholder="Nhập câu trả lời của bạn..." rows="4"></textarea>
+            <textarea id="answer-input" placeholder="Nhập câu trả lời của bạn..."></textarea>
             <div id="answer-buttons">
-                <button id="check-answer-btn">Trả lời</button>
+                <button id="check-answer-btn" aria-label="Gửi câu trả lời">Trả lời</button>
             </div>
-            <button id="complete-button" style="display: none;">Hoàn thành</button>
+            <button id="complete-button" aria-label="Hoàn thành bài kiểm tra" style="display: none;">Hoàn thành</button>
         </section>
     </main>
     <footer>
         <p>Tài liệu kiểm tra © 2025 thiết kế bởi Thuận</p>
     </footer>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase CDN -->
     <script type="module">
+        // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAfy4QMD9_7PyFHpInNdKDRWuW4AYCtLJ4",
             authDomain: "history-e4633.firebaseapp.com",
@@ -222,15 +210,17 @@
             measurementId: "G-DC055090BW"
         };
 
+        // Initialize Firebase
         let db = null;
         try {
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
         } catch (error) {
-            console.error("Lỗi khởi tạo Firebase:", error);
-            alert("Không thể kết nối cơ sở dữ liệu. Vui lòng kiểm tra mạng!");
+            console.error("Lỗi khi khởi tạo Firebase:", error);
+            alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng kiểm tra kết nối mạng hoặc cấu hình Firebase!");
         }
 
+        // Questions data with furigana for lessons 1 to 35
         const questions = {
             1: [
                 { text: "お名前は何ですか。", furigana: [] },
@@ -241,11 +231,310 @@
                 { text: "あなたは<ruby>実習生<rt>じっしゅうせい</rt></ruby>ですか。", furigana: [["実習生", "じっしゅうせい"]] },
                 { text: "<ruby>今年<rt>ことし</rt></ruby>は何<ruby>歳<rt>さい</rt></ruby>ですか。", furigana: [["今年", "ことし"], ["歳", "さい"]] }
             ],
-            // ... (Các bài khác giữ nguyên như bạn đã có)
-            // Do giới hạn độ dài, mình chỉ để 1 bài mẫu. Bạn giữ nguyên phần questions như cũ.
+            3: [
+                { text: "<ruby>出身<rt>しゅっしん</rt></ruby>はどこですか。", furigana: [["出身", "しゅっしん"]] },
+                { text: "<ruby>寮<rt>りょう</rt></ruby>はどこですか。", furigana: [["寮", "りょう"]] },
+                { text: "トイレはどこですか。", furigana: [] },
+                { text: "<ruby>事務所<rt>じむしょ</rt></ruby>はどこですか。", furigana: [["事務所", "じむしょ"]] },
+                { text: "<ruby>教室<rt>きょうしつ</rt></ruby>は何<ruby>階<rt>かい</rt></ruby>ですか。", furigana: [["教室", "きょうしつ"], ["階", "かい"]] },
+                { text: "あなたの<ruby>寮<rt>りょう</rt></ruby>は2<ruby>階<rt>かい</rt></ruby>ですか。", furigana: [["寮", "りょう"], ["階", "かい"]] },
+                { text: "<ruby>会議室<rt>かいぎしつ</rt></ruby>はどこですか。", furigana: [["会議室", "かいぎしつ"]] }
+            ],
+            4: [
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby>、何<ruby>時<rt>じ</rt></ruby>に<ruby>起<rt>お</rt></ruby>きますか。", furigana: [["毎日", "まいにち"], ["何時", "なんじ"], ["起", "お"]] },
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby>、何<ruby>時<rt>じ</rt></ruby>に<ruby>寝<rt>ね</rt></ruby>ますか。", furigana: [["毎日", "まいにち"], ["何時", "なんじ"], ["寝", "ね"]] },
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby>、何<ruby>時<rt>じ</rt></ruby>から何<ruby>時<rt>じ</rt></ruby>まで<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>しますか。", furigana: [["毎日", "まいにち"], ["何時", "なんじ"], ["日本語", "にほんご"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>昼休<rt>ひるやす</rt></ruby>みは何<ruby>時<rt>じ</rt></ruby>から何<ruby>時<rt>じ</rt></ruby>までですか。", furigana: [["昼休", "ひるやす"], ["何時", "なんじ"]] },
+                { text: "<ruby>今日<rt>きょう</rt></ruby>は何<ruby>月<rt>がつ</rt></ruby>何<ruby>日<rt>にち</rt></ruby>何<ruby>曜日<rt>ようび</rt></ruby>ですか。", furigana: [["今日", "きょう"], ["何月", "なんがつ"], ["何日", "なんにち"], ["何曜日", "なんようび"]] },
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>、<ruby>勉強<rt>べんきょう</rt></ruby>しますか。", furigana: [["日曜日", "にちようび"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、<ruby>勉強<rt>べんきょう</rt></ruby>しましたか。", furigana: [["昨日", "きのう"], ["勉強", "べんきょう"]] }
+            ],
+            5: [
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>、どこへ<ruby>行<rt>い</rt></ruby>きますか。", furigana: [["日曜日", "にちようび"], ["行", "い"]] },
+                { text: "いつ<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きますか。", furigana: [["日本", "にほん"], ["行", "い"]] },
+                { text: "<ruby>誰<rt>だれ</rt></ruby>と<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きますか。", furigana: [["誰", "だれ"], ["日本", "にほん"], ["行", "い"]] },
+                { text: "いつ<ruby>家<rt>いえ</rt></ruby>へ<ruby>帰<rt>かえ</rt></ruby>りますか。", furigana: [["家", "いえ"], ["帰", "かえ"]] },
+                { text: "何で<ruby>家<rt>いえ</rt></ruby>へ<ruby>帰<rt>かえ</rt></ruby>りますか。", furigana: [["家", "いえ"], ["帰", "かえ"]] },
+                { text: "<ruby>誕生日<rt>たんじょうび</rt></ruby>はいつですか。", furigana: [["誕生日", "たんじょうび"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>は何<ruby>曜日<rt>ようび</rt></ruby>でしたか。", furigana: [["昨日", "きのう"], ["何曜日", "なんようび"]] }
+            ],
+            6: [
+                { text: "タバコを<ruby>吸<rt>す</rt></ruby>いますか。", furigana: [["吸", "す"]] },
+                { text: "ビールを<ruby>飲<rt>の</rt></ruby>みますか。", furigana: [["飲", "の"]] },
+                { text: "けさ、何を<ruby>食<rt>た</rt></ruby>べましたか。", furigana: [["食", "た"]] },
+                { text: "<ruby>週末<rt>しゅうまつ</rt></ruby>、何をしますか。", furigana: [["週末", "しゅうまつ"]] },
+                { text: "どこで<ruby>昼<rt>ひる</rt></ruby>ごはんを<ruby>食<rt>た</rt></ruby>べますか。", furigana: [["昼", "ひる"], ["食", "た"]] },
+                { text: "<ruby>夜<rt>よる</rt></ruby>、何をしますか。", furigana: [["夜", "よる"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、何をしましたか。", furigana: [["昨日", "きのう"]] }
+            ],
+            7: [
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、<ruby>宿題<rt>しゅくだい</rt></ruby>をしましたか。", furigana: [["昨日", "きのう"], ["宿題", "しゅくだい"]] },
+                { text: "もう<ruby>朝<rt>あさ</rt></ruby>ごはんを<ruby>食<rt>た</rt></ruby>べましたか。", furigana: [["朝", "あさ"], ["食", "た"]] },
+                { text: "何で<ruby>朝<rt>あさ</rt></ruby>ごはんを<ruby>食<rt>た</rt></ruby>べましたか。", furigana: [["朝", "あさ"], ["食", "た"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、<ruby>家族<rt>かぞく</rt></ruby>に<ruby>電話<rt>でんわ</rt></ruby>をかけましたか。", furigana: [["昨日", "きのう"], ["家族", "かぞく"], ["電話", "でんわ"]] },
+                { text: "<ruby>去年<rt>きょねん</rt></ruby>の<ruby>誕生日<rt>たんじょうび</rt></ruby>にプレゼントをもらいましたか。", furigana: [["去年", "きょねん"], ["誕生日", "たんじょうび"]] },
+                { text: "何で<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>しますか。", furigana: [["日本語", "にほんご"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>去年<rt>きょねん</rt></ruby>の<ruby>母<rt>はは</rt></ruby>の<ruby>誕生日<rt>たんじょうび</rt></ruby>に何を<ruby>買<rt>か</rt></ruby>いましたか。", furigana: [["去年", "きょねん"], ["母", "はは"], ["誕生日", "たんじょうび"], ["買", "か"]] }
+            ],
+            8: [
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>はどうですか。", furigana: [["日本語", "にほんご"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>はどんな<ruby>国<rt>くに</rt></ruby>ですか。", furigana: [["日本", "にほん"], ["国", "くに"]] },
+                { text: "<ruby>田舎<rt>いなか</rt></ruby>はどちらですか。どんなところですか。", furigana: [["田舎", "いなか"]] },
+                { text: "ホーチミン<ruby>市<rt>し</rt></ruby>はどんなまちですか。", furigana: [["市", "し"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>食<rt>た</rt></ruby>べ<ruby>物<rt>もの</rt></ruby>はどうですか。", furigana: [["日本", "にほん"], ["食べ物", "たべもの"]] },
+                { text: "どんなスポーツが<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["好", "す"]] },
+                { text: "どんなベトナム<ruby>料理<rt>りょうり</rt></ruby>が<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["料理", "りょうり"], ["好", "す"]] }
+            ],
+            9: [
+                { text: "<ruby>好<rt>す</rt></ruby>きな<ruby>歌<rt>うた</rt></ruby>は何ですか。", furigana: [["好", "す"], ["歌", "うた"]] },
+                { text: "どんな<ruby>飲<rt>の</rt></ruby>み<ruby>物<rt>もの</rt></ruby>が<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["飲み物", "のみもの"], ["好", "す"]] },
+                { text: "<ruby>好<rt>す</rt></ruby>きな<ruby>食<rt>た</rt></ruby>べ<ruby>物<rt>もの</rt></ruby>はなんですか。<ruby>嫌<rt>きら</rt></ruby>いな<ruby>食<rt>た</rt></ruby>べ<ruby>物<rt>もの</rt></ruby>はなんですか。", furigana: [["好きな食べ物", "すきなたべもの"], ["嫌いな食べ物", "きらいなたべもの"]] },
+                { text: "<ruby>英語<rt>えいご</rt></ruby>が<ruby>分<rt>わ</rt></ruby>かりますか。", furigana: [["英語", "えいご"], ["分", "わ"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>が<ruby>分<rt>わ</rt></ruby>かりますか。", furigana: [["日本語", "にほんご"], ["分", "わ"]] },
+                { text: "<ruby>料理<rt>りょうり</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>ですか。", furigana: [["料理", "りょうり"], ["上手", "じょうず"]] },
+                { text: "<ruby>歌<rt>うた</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>ですか。", furigana: [["歌", "うた"], ["上手", "じょうず"]] }
+            ],
+            10: [
+                { text: "今、どこにいますか。", furigana: [] },
+                { text: "うちに<ruby>犬<rt>いぬ</rt></ruby>がいますか。", furigana: [["犬", "いぬ"]] },
+                { text: "うちの<ruby>近<rt>ちか</rt></ruby>くに何がありますか。", furigana: [["近", "ちか"]] },
+                { text: "<ruby>部屋<rt>へや</rt></ruby>に<ruby>時計<rt>とけい</rt></ruby>がありますか。", furigana: [["部屋", "へや"], ["時計", "とけい"]] },
+                { text: "センターの<ruby>近<rt>ちか</rt></ruby>くに何がありますか。", furigana: [["近", "ちか"]] },
+                { text: "<ruby>教室<rt>きょうしつ</rt></ruby>に今<ruby>誰<rt>だれ</rt></ruby>がいますか。", furigana: [["教室", "きょうしつ"], ["誰", "だれ"]] },
+                { text: "<ruby>机<rt>つくえ</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>に何がありますか。", furigana: [["机", "つくえ"], ["上", "うえ"]] }
+            ],
+            11: [
+                { text: "うちにテレビが何<ruby>台<rt>だい</rt></ruby>ありますか。", furigana: [["台", "だい"]] },
+                { text: "うちにバイクが何<ruby>台<rt>だい</rt></ruby>ありますか。", furigana: [["台", "だい"]] },
+                { text: "<ruby>家族<rt>かぞく</rt></ruby>は何<ruby>人<rt>にん</rt></ruby>いますか。", furigana: [["家族", "かぞく"], ["何人", "なんにん"]] },
+                { text: "センターから<ruby>田舎<rt>いなか</rt></ruby>までどのぐらいかかりますか。", furigana: [["田舎", "いなか"]] },
+                { text: "うちに<ruby>部屋<rt>へや</rt></ruby>がいくつありますか。", furigana: [["部屋", "へや"]] },
+                { text: "センターに<ruby>日本人<rt>にほんじん</rt></ruby>の<ruby>教師<rt>きょうし</rt></ruby>がいますか。何<ruby>人<rt>にん</rt></ruby>いますか。", furigana: [["日本人", "にほんじん"], ["教師", "きょうし"], ["何人", "なんにん"]] },
+                { text: "1ヶ<ruby>月<rt>げつ</rt></ruby>に何<ruby>回<rt>かい</rt></ruby><ruby>家<rt>いえ</rt></ruby>へ<ruby>帰<rt>かえ</rt></ruby>りますか。", furigana: [["月", "げつ"], ["回", "かい"], ["家", "いえ"], ["帰", "かえ"]] }
+            ],
+            12: [
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>の<ruby>天気<rt>てんき</rt></ruby>はどうでしたか。", furigana: [["昨日", "きのう"], ["天気", "てんき"]] },
+                { text: "<ruby>一年<rt>いちねん</rt></ruby>でいつが<ruby>一番<rt>いちばん</rt></ruby><ruby>好<rt>す</rt></ruby>きですか。", furigana: [["一年", "いちねん"], ["一番", "いちばん"], ["好", "す"]] },
+                { text: "ベトナムでどこが<ruby>一番<rt>いちばん</rt></ruby><ruby>有名<rt>ゆうめい</rt></ruby>ですか。", furigana: [["一番", "いちばん"], ["有名", "ゆうめい"]] },
+                { text: "ベトナム<ruby>料理<rt>りょうり</rt></ruby>で何が<ruby>一番<rt>いちばん</rt></ruby><ruby>好<rt>す</rt></ruby>きですか。", furigana: [["料理", "りょうり"], ["一番", "いちばん"], ["好", "す"]] },
+                { text: "<ruby>家族<rt>かぞく</rt></ruby>でだれが<ruby>一番<rt>いちばん</rt></ruby><ruby>歌<rt>うた</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>ですか。", furigana: [["家族", "かぞく"], ["一番", "いちばん"], ["歌", "うた"], ["上手", "じょうず"]] },
+                { text: "<ruby>お父<rt>おとう</rt></ruby>さんと<ruby>お母<rt>おかあ</rt></ruby>さんとどちらが<ruby>料理<rt>りょうり</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>ですか。", furigana: [["お父さん", "おとうさん"], ["お母さん", "おかあさん"], ["料理", "りょうり"], ["上手", "じょうず"]] },
+                { text: "<ruby>魚<rt>さかな</rt></ruby>と<ruby>肉<rt>にく</rt></ruby>とどちらが<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["魚", "さかな"], ["肉", "にく"], ["好", "す"]] }
+            ],
+            13: [
+                { text: "<ruby>週末<rt>しゅうまつ</rt></ruby> 何をしたいですか。", furigana: [["週末", "しゅうまつ"]] },
+                { text: "どうして、<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きたいですか。", furigana: [["日本", "にほん"], ["行", "い"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>ってから、何をしたいですか。", furigana: [["日本", "にほん"], ["行", "い"]] },
+                { text: "今、何がいちばんほしいですか。", furigana: [] },
+                { text: "今、だれに<ruby>一番<rt>いちばん</rt></ruby><ruby>会<rt>あ</rt></ruby>いたいですか。", furigana: [["一番", "いちばん"], ["会", "あ"]] },
+                { text: "どんな<ruby>人<rt>ひと</rt></ruby>と<ruby>結婚<rt>けっこん</rt></ruby>したいですか。", furigana: [["人", "ひと"], ["結婚", "けっこん"]] },
+                { text: "<ruby>将来<rt>しょうらい</rt></ruby>、どこで<ruby>働<rt>はたら</rt></ruby>きたいですか。", furigana: [["将来", "しょうらい"], ["働", "はたら"]] }
+            ],
+            14: [
+                { text: "今<ruby>雨<rt>あめ</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>っていますか。", furigana: [["雨", "あめ"], ["降", "ふ"]] },
+                { text: "今何をしていますか。", furigana: [] },
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>と<ruby>組合<rt>くみあい</rt></ruby>の名前を<ruby>教<rt>おし</rt></ruby>えてください。", furigana: [["会社", "かいしゃ"], ["組合", "くみあい"], ["教", "おし"]] },
+                { text: "<ruby>生年月日<rt>せいねんがっぴ</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えてください。", furigana: [["生年月日", "せいねんがっぴ"], ["教", "おし"]] },
+                { text: "<ruby>電話<rt>でんわ</rt></ruby><ruby>番号<rt>ばんごう</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えてください。", furigana: [["電話番号", "でんわばんごう"], ["教", "おし"]] },
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>と<ruby>組合<rt>くみあい</rt></ruby>の<ruby>住所<rt>じゅうしょ</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えてください。", furigana: [["会社", "かいしゃ"], ["組合", "くみあい"], ["住所", "じゅうしょ"], ["教", "おし"]] },
+                { text: "今<ruby>勉強<rt>べんきょう</rt></ruby>していますか。", furigana: [["勉強", "べんきょう"]] }
+            ],
+            15: [
+                { text: "<ruby>休<rt>やす</rt></ruby>みの<ruby>日<rt>ひ</rt></ruby>、何をしていますか。", furigana: [["休", "やす"], ["日", "ひ"]] },
+                { text: "今、どこに<ruby>住<rt>す</rt></ruby>んでいますか。", furigana: [["住", "す"]] },
+                { text: "<ruby>結婚<rt>けっこん</rt></ruby>していますか。", furigana: [["結婚", "けっこん"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>一番<rt>いちばん</rt></ruby><ruby>高<rt>たか</rt></ruby>い<ruby>山<rt>やま</rt></ruby>をしっていますか。", furigana: [["日本", "にほん"], ["一番", "いちばん"], ["高", "たか"], ["山", "やま"]] },
+                { text: "<ruby>工場<rt>こうじょう</rt></ruby>で何をしてはいけませんか。", furigana: [["工場", "こうじょう"]] },
+                { text: "<ruby>美術館<rt>びじゅつかん</rt></ruby>で<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>ってもいいですか。", furigana: [["美術館", "びじゅつかん"], ["写真", "しゃしん"], ["撮", "と"]] },
+                { text: "ベトナムでどんな<ruby>日本<rt>にほん</rt></ruby>の<ruby>製品<rt>せいひん</rt></ruby>を<ruby>売<rt>う</rt></ruby>っていますか。", furigana: [["日本", "にほん"], ["製品", "せいひん"], ["売", "う"]] }
+            ],
+            16: [
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>ってから、何をしたいですか。", furigana: [["日本", "にほん"], ["行", "い"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>ってから、どこに<ruby>行<rt>い</rt></ruby>きたいですか。", furigana: [["日本", "にほん"], ["行", "い"]] },
+                { text: "<ruby>朝<rt>あさ</rt></ruby><ruby>起<rt>お</rt></ruby>きて、何をしますか。", furigana: [["朝", "あさ"], ["起", "お"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>の<ruby>晩<rt>ばん</rt></ruby>、ご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べてから何をしましたか。", furigana: [["昨日", "きのう"], ["晩", "ばん"], ["ご飯", "ごはん"], ["食", "た"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で3<ruby>年間<rt>ねんかん</rt></ruby><ruby>働<rt>はたら</rt></ruby>いて、<ruby>国<rt>くに</rt></ruby>へ<ruby>帰<rt>かえ</rt></ruby>ってから、何をしますか。", furigana: [["日本", "にほん"], ["年間", "ねんかん"], ["働", "はたら"], ["国", "くに"], ["帰", "かえ"]] },
+                { text: "ベトナムの<ruby>料理<rt>りょうり</rt></ruby>はどうですか。（くて、で）。", furigana: [["料理", "りょうり"]] },
+                { text: "<ruby>お母<rt>おかあ</rt></ruby>さんは、どんな<ruby>人<rt>ひと</rt></ruby>ですか。（くて、で）。", furigana: [["お母さん", "おかあさん"], ["人", "ひと"]] }
+            ],
+            17: [
+                { text: "<ruby>病気<rt>びょうき</rt></ruby>です。何をしなければなりませんか。", furigana: [["病気", "びょうき"]] },
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby><ruby>宿題<rt>しゅくだい</rt></ruby>をしなければなりませんか。", furigana: [["毎日", "まいにち"], ["宿題", "しゅくだい"]] },
+                { text: "ベトナムで<ruby>子<rt>こ</rt></ruby>どもは<ruby>何<rt>なん</rt></ruby><ruby>歳<rt>さい</rt></ruby>から<ruby>学校<rt>がっこう</rt></ruby>へ<ruby>行<rt>い</rt></ruby>かなければなりませんか。", furigana: [["何歳", "なんさい"], ["学校", "がっこう"], ["行", "い"]] },
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby>、<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>話<rt>はな</rt></ruby>さなければなりませんか。", furigana: [["毎日", "まいにち"], ["日本語", "にほんご"], ["話", "はな"]] },
+                { text: "<ruby>毎日<rt>まいにち</rt></ruby>、何<ruby>時<rt>じ</rt></ruby>に<ruby>起<rt>お</rt></ruby>かなければなりませんか。", furigana: [["毎日", "まいにち"], ["何時", "なんじ"], ["起", "お"]] },
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>でも、<ruby>働<rt>はたら</rt></ruby>かなければなりませんか。", furigana: [["日曜日", "にちようび"], ["働", "はたら"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きます。何を<ruby>持<rt>も</rt></ruby>って<ruby>行<rt>い</rt></ruby>かなければなりませんか。", furigana: [["日本", "にほん"], ["行", "い"], ["持", "も"]] }
+            ],
+            18: [
+                { text: "<ruby>泳<rt>およ</rt></ruby>ぐことができますか。何メートルくらいできますか。", furigana: [["泳", "およ"]] },
+                { text: "<ruby>趣味<rt>しゅみ</rt></ruby>は何ですか。", furigana: [["趣味", "しゅみ"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>で<ruby>歌<rt>うた</rt></ruby>を<ruby>歌<rt>うた</rt></ruby>うことができますか。", furigana: [["日本語", "にほんご"], ["歌", "うた"]] },
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、<ruby>寝<rt>ね</rt></ruby>る<ruby>前<rt>まえ</rt></ruby>に、何をしましたか。", furigana: [["昨日", "きのう"], ["寝", "ね"], ["前", "まえ"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>く<ruby>前<rt>まえ</rt></ruby>に、だれに<ruby>一番<rt>いちばん</rt></ruby><ruby>会<rt>あ</rt></ruby>いたいですか。", furigana: [["日本", "にほん"], ["行", "い"], ["前", "まえ"], ["一番", "いちばん"], ["会", "あ"]] },
+                { text: "ご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べる<ruby>前<rt>まえ</rt></ruby>に<ruby>手<rt>て</rt></ruby>を<ruby>洗<rt>あら</rt></ruby>いますか。", furigana: [["ご飯", "ごはん"], ["食", "た"], ["前", "まえ"], ["手", "て"], ["洗", "あら"]] },
+                { text: "<ruby>漢字<rt>かんじ</rt></ruby>を<ruby>読<rt>よ</rt></ruby>むことができますか。いくつぐらい<ruby>読<rt>よ</rt></ruby>むことができますか。", furigana: [["漢字", "かんじ"], ["読", "よ"]] }
+            ],
+            19: [
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で何をしたいですか。（～たり～たり）。", furigana: [["日本", "にほん"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby><ruby>料理<rt>りょうり</rt></ruby>を<ruby>食<rt>た</rt></ruby>べたことがありますか。どこで<ruby>食<rt>た</rt></ruby>べましたか。", furigana: [["日本料理", "にほんりょうり"], ["食", "た"]] },
+                { text: "ダイエットしたことがありますか。", furigana: [] },
+                { text: "<ruby>次<rt>つぎ</rt></ruby>の<ruby>誕生日<rt>たんじょうび</rt></ruby>に、何<ruby>歳<rt>さい</rt></ruby>になりますか。", furigana: [["次", "つぎ"], ["誕生日", "たんじょうび"], ["何歳", "なんさい"]] },
+                { text: "ベトナムのどこへ<ruby>旅行<rt>りょこう</rt></ruby>に<ruby>行<rt>い</rt></ruby>ったことがありますか。どんな<ruby>所<rt>ところ</rt></ruby>でしたか。", furigana: [["旅行", "りょこう"], ["行", "い"], ["所", "ところ"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>になりましたか。", furigana: [["日本語", "にほんご"], ["上手", "じょうず"]] },
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>、何をしますか。（～たり～たり）。", furigana: [["日曜日", "にちようび"]] }
+            ],
+            20: [
+                { text: "<ruby>果物<rt>くだもの</rt></ruby>で何が<ruby>一番<rt>いちばん</rt></ruby><ruby>好<rt>す</rt></ruby>きですか。", furigana: [["果物", "くだもの"], ["一番", "いちばん"], ["好", "す"]] },
+                { text: "<ruby>漢字<rt>かんじ</rt></ruby>がいくつ<ruby>分<rt>わ</rt></ruby>かる？", furigana: [["漢字", "かんじ"], ["分", "わ"]] },
+                { text: "ベトナムと<ruby>日本<rt>にほん</rt></ruby>とどっちが<ruby>人<rt>ひと</rt></ruby>が<ruby>多<rt>おお</rt></ruby>い？", furigana: [["日本", "にほん"], ["人", "ひと"], ["多", "おお"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>映画<rt>えいが</rt></ruby>を<ruby>見<rt>み</rt></ruby>たことがある？", furigana: [["日本", "にほん"], ["映画", "えいが"], ["見", "み"]] },
+                { text: "<ruby>仕事<rt>しごと</rt></ruby>は何？", furigana: [["仕事", "しごと"]] },
+                { text: "<ruby>車<rt>くるま</rt></ruby>を<ruby>運転<rt>うんてん</rt></ruby>することができる？", furigana: [["車", "くるま"], ["運転", "うんてん"]] },
+                { text: "今、<ruby>誰<rt>だれ</rt></ruby>と<ruby>住<rt>す</rt></ruby>んでる？", furigana: [["誰", "だれ"], ["住", "す"]] }
+            ],
+            21: [
+                { text: "<ruby>日本人<rt>にほんじん</rt></ruby>はご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べる<ruby>前<rt>まえ</rt></ruby>に何と言いますか。", furigana: [["日本人", "にほんじん"], ["ご飯", "ごはん"], ["食", "た"], ["前", "まえ"]] },
+                { text: "<ruby>日本人<rt>にほんじん</rt></ruby>は<ruby>仕事<rt>しごと</rt></ruby>が<ruby>終<rt>お</rt></ruby>わって、うちへ<ruby>帰<rt>かえ</rt></ruby>る<ruby>前<rt>まえ</rt></ruby>に何と言いますか。", furigana: [["日本人", "にほんじん"], ["仕事", "しごと"], ["終", "お"], ["帰", "かえ"], ["前", "まえ"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>について、どう<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本語", "にほんご"], ["思", "おも"]] },
+                { text: "<ruby>仕事<rt>しごと</rt></ruby>と<ruby>家族<rt>かぞく</rt></ruby>とどちらが<ruby>大切<rt>たいせつ</rt></ruby>だと<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["仕事", "しごと"], ["家族", "かぞく"], ["大切", "たいせつ"], ["思", "おも"]] },
+                { text: "<ruby>友達<rt>ともだち</rt></ruby>が<ruby>病気<rt>びょうき</rt></ruby>です。<ruby>友達<rt>ともだち</rt></ruby>に何と言いますか。", furigana: [["友達", "ともだち"], ["病気", "びょうき"]] },
+                { text: "<ruby>明日<rt>あした</rt></ruby>は<ruby>天気<rt>てんき</rt></ruby>がいいと<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["明日", "あした"], ["天気", "てんき"], ["思", "おも"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>について、どう<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本", "にほん"], ["思", "おも"]] }
+            ],
+            22: [
+                { text: "今、<ruby>一番<rt>いちばん</rt></ruby><ruby>欲<rt>ほ</rt></ruby>しいものは何ですか。", furigana: [["一番", "いちばん"], ["欲", "ほ"]] },
+                { text: "<ruby>最近<rt>さいきん</rt></ruby>、<ruby>楽<rt>たの</rt></ruby>しかったことはありませんか。", furigana: [["最近", "さいきん"], ["楽", "たの"]] },
+                { text: "あなたが<ruby>生<rt>う</rt></ruby>まれたところはどこですか。", furigana: [["生", "う"]] },
+                { text: "<ruby>初<rt>はじ</rt></ruby>めて<ruby>習<rt>なら</rt></ruby>った<ruby>外国語<rt>がいこくご</rt></ruby>はなんですか。", furigana: [["初めて", "はじめて"], ["習", "なら"], ["外国語", "がいこくご"]] },
+                { text: "しっている<ruby>野菜<rt>やさい</rt></ruby>の<ruby>名前<rt>なまえ</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えてください。", furigana: [["野菜", "やさい"], ["名前", "なまえ"], ["教", "おし"]] },
+                { text: "<ruby>お母<rt>おかあ</rt></ruby>さんが<ruby>作<rt>つく</rt></ruby>った<ruby>料理<rt>りょうり</rt></ruby>が<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["お母さん", "おかあさん"], ["作", "つく"], ["料理", "りょうり"], ["好", "す"]] },
+                { text: "<ruby>将来<rt>しょうらい</rt></ruby>、<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>使<rt>つか</rt></ruby>う<ruby>仕事<rt>しごと</rt></ruby>がしたいですか。", furigana: [["将来", "しょうらい"], ["日本語", "にほんご"], ["使", "つか"], ["仕事", "しごと"]] }
+            ],
+            23: [
+                { text: "<ruby>子<rt>こ</rt></ruby>どもの<ruby>時<rt>とき</rt></ruby>どこに<ruby>住<rt>す</rt></ruby>んでいましたか。", furigana: [["子", "こ"], ["時", "とき"], ["住", "す"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>って、<ruby>道<rt>みち</rt></ruby>がわからない<ruby>時<rt>とき</rt></ruby>どうしますか。", furigana: [["日本", "にほん"], ["行", "い"], ["道", "みち"], ["時", "とき"]] },
+                { text: "<ruby>疲<rt>つか</rt></ruby>れた<ruby>時<rt>とき</rt></ruby>、どうしますか。", furigana: [["疲", "つか"], ["時", "とき"]] },
+                { text: "<ruby>寂<rt>さび</rt></ruby>しいとき、どうしますか。", furigana: [["寂", "さび"]] },
+                { text: "よく<ruby>聞<rt>き</rt></ruby>こえないとき、何と言いますか。", furigana: [["聞", "き"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>冬<rt>ふゆ</rt></ruby>になるとどうなりますか。", furigana: [["日本", "にほん"], ["冬", "ふゆ"]] },
+                { text: "<ruby>多<rt>おお</rt></ruby>くお<ruby>酒<rt>さけ</rt></ruby>を<ruby>飲<rt>の</rt></ruby>むとどうなりますか。", furigana: [["多", "おお"], ["酒", "さけ"], ["飲", "の"]] }
+            ],
+            24: [
+                { text: "<ruby>お母<rt>おかあ</rt></ruby>さんの<ruby>誕生日<rt>たんじょうび</rt></ruby>に何をしてあげたいですか。", furigana: [["お母さん", "おかあさん"], ["誕生日", "たんじょうび"]] },
+                { text: "<ruby>子<rt>こ</rt></ruby>どもの<ruby>時<rt>とき</rt></ruby>、<ruby>誕生日<rt>たんじょうび</rt></ruby>に何を<ruby>買<rt>か</rt></ruby>ってもらいましたか。", furigana: [["子", "こ"], ["時", "とき"], ["誕生日", "たんじょうび"], ["買", "か"]] },
+                { text: "<ruby>外国人<rt>がいこくじん</rt></ruby>の<ruby>友達<rt>ともだち</rt></ruby>が<ruby>来<rt>き</rt></ruby>た<ruby>時<rt>とき</rt></ruby>、ベトナムのどこを<ruby>案内<rt>あんない</rt></ruby>してあげたいですか。", furigana: [["外国人", "がいこくじん"], ["友達", "ともだち"], ["来", "き"], ["時", "とき"], ["案内", "あんない"]] },
+                { text: "あなたが<ruby>病気<rt>びょうき</rt></ruby>になった<ruby>時<rt>とき</rt></ruby>に、<ruby>友達<rt>ともだち</rt></ruby>が何をしてくれましたか。", furigana: [["病気", "びょうき"], ["時", "とき"], ["友達", "ともだち"]] },
+                { text: "センターで<ruby>勉強<rt>べんきょう</rt></ruby>する<ruby>時<rt>とき</rt></ruby>、<ruby>先生<rt>せんせい</rt></ruby>に何をしてもらいましたか。", furigana: [["勉強", "べんきょう"], ["時", "とき"], ["先生", "せんせい"]] },
+                { text: "<ruby>去年<rt>きょねん</rt></ruby>の<ruby>誕生日<rt>たんじょうび</rt></ruby>にプレゼントを<ruby>買<rt>か</rt></ruby>ってもらいましたか。", furigana: [["去年", "きょねん"], ["誕生日", "たんじょうび"], ["買", "か"]] },
+                { text: "<ruby>誰<rt>だれ</rt></ruby>が<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えてくれましたか。", furigana: [["誰", "だれ"], ["日本語", "にほんご"], ["教", "おし"]] }
+            ],
+            25: [
+                { text: "もしお<ruby>金<rt>かね</rt></ruby>が<ruby>多<rt>おお</rt></ruby>くあったら、何をしたいですか。", furigana: [["お金", "おかね"], ["多", "おお"]] },
+                { text: "<ruby>体<rt>からだ</rt></ruby>の<ruby>調子<rt>ちょうし</rt></ruby>が<ruby>悪<rt>わる</rt></ruby>かったら、どうしますか。", furigana: [["体", "からだ"], ["調子", "ちょうし"], ["悪", "わる"]] },
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>でも<ruby>勉強<rt>べんきょう</rt></ruby>したり<ruby>働<rt>はたら</rt></ruby>いたりしますか。", furigana: [["日曜日", "にちようび"], ["勉強", "べんきょう"], ["働", "はたら"]] },
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>仕事<rt>しごと</rt></ruby>が<ruby>分<rt>わ</rt></ruby>からなかったら、どうしますか。", furigana: [["会社", "かいしゃ"], ["仕事", "しごと"], ["分", "わ"]] },
+                { text: "<ruby>恋人<rt>こいびと</rt></ruby>はお<ruby>金<rt>かね</rt></ruby>がなくても、<ruby>結婚<rt>けっこん</rt></ruby>しますか。", furigana: [["恋人", "こいびと"], ["お金", "おかね"], ["結婚", "けっこん"]] },
+                { text: "<ruby>年<rt>とし</rt></ruby>をとっても、<ruby>働<rt>はたら</rt></ruby>きたいですか。", furigana: [["年", "とし"], ["働", "はたら"]] },
+                { text: "<ruby>日曜日<rt>にちようび</rt></ruby>、いい<ruby>天気<rt>てんき</rt></ruby>だったら、どこへ<ruby>遊<rt>あそ</rt></ruby>びに<ruby>行<rt>い</rt></ruby>きたいですか。", furigana: [["日曜日", "にちようび"], ["天気", "てんき"], ["遊", "あそ"], ["行", "い"]] }
+            ],
+            26: [
+                { text: "<ruby>昨日<rt>きのう</rt></ruby>、うちへ<ruby>帰<rt>かえ</rt></ruby>るときに、<ruby>財布<rt>さいふ</rt></ruby>を<ruby>拾<rt>ひろ</rt></ruby>ったんですが、どうしたらいいですか。", furigana: [["昨日", "きのう"], ["帰", "かえ"], ["財布", "さいふ"], ["拾", "ひろ"]] },
+                { text: "ベトナム<ruby>人<rt>じん</rt></ruby>の<ruby>家<rt>いえ</rt></ruby>に<ruby>行<rt>い</rt></ruby>くんですが、どんなお<ruby>土産<rt>みやげ</rt></ruby>を<ruby>持<rt>も</rt></ruby>って<ruby>行<rt>い</rt></ruby>ったらいいですか。", furigana: [["人", "じん"], ["家", "いえ"], ["行", "い"], ["お土産", "おみやげ"], ["持", "も"]] },
+                { text: "<ruby>仕事<rt>しごと</rt></ruby>が<ruby>分<rt>わ</rt></ruby>からない<ruby>時<rt>とき</rt></ruby>、<ruby>先輩<rt>せんぱい</rt></ruby>に<ruby>教<rt>おし</rt></ruby>えてもらいたいんですが、なんと言いますか。", furigana: [["仕事", "しごと"], ["分", "わ"], ["時", "とき"], ["先輩", "せんぱい"], ["教", "おし"]] },
+                { text: "ベトナムを<ruby>旅行<rt>りょこう</rt></ruby>したいんですが、<ruby>何月<rt>なんがつ</rt></ruby>がいいですか。", furigana: [["旅行", "りょこう"], ["何月", "なんがつ"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>したいんですが、どこかいいところを<ruby>紹介<rt>しょうかい</rt></ruby>して<ruby>頂<rt>いただ</rt></ruby>けませんか。", furigana: [["日本語", "にほんご"], ["勉強", "べんきょう"], ["紹介", "しょうかい"], ["頂", "いただ"]] },
+                { text: "<ruby>京都<rt>きょうと</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きたいんですが、<ruby>道<rt>みち</rt></ruby>を<ruby>教<rt>おし</rt></ruby>えて<ruby>頂<rt>いただ</rt></ruby>けませんか。", furigana: [["京都", "きょうと"], ["行", "い"], ["道", "みち"], ["教", "おし"], ["頂", "いただ"]] },
+                { text: "<ruby>朝<rt>あさ</rt></ruby>からミラーさんがいません。彼は<ruby>今日<rt>きょう</rt></ruby><ruby>休<rt>やす</rt></ruby>んだんですか。", furigana: [["朝", "あさ"], ["今日", "きょう"], ["休", "やす"]] }
+            ],
+            27: [
+                { text: "<ruby>人<rt>ひと</rt></ruby>に<ruby>初<rt>はじ</rt></ruby>めて<ruby>会<rt>あ</rt></ruby>った<ruby>時<rt>とき</rt></ruby>、すぐ<ruby>名前<rt>なまえ</rt></ruby>が<ruby>覚<rt>おぼ</rt></ruby>えられますか。", furigana: [["人", "ひと"], ["初", "はじ"], ["会", "あ"], ["時", "とき"], ["名前", "なまえ"], ["覚", "おぼ"]] },
+                { text: "<ruby>海<rt>うみ</rt></ruby>に<ruby>住<rt>す</rt></ruby>んだら、何が<ruby>聞<rt>き</rt></ruby>こえますか。", furigana: [["海", "うみ"], ["住", "す"], ["聞", "き"]] },
+                { text: "<ruby>自分<rt>じぶん</rt></ruby>で<ruby>料理<rt>りょうり</rt></ruby>が<ruby>作<rt>つく</rt></ruby>れますか。どんな<ruby>料理<rt>りょうり</rt></ruby>が<ruby>作<rt>つく</rt></ruby>れますか。", furigana: [["自分", "じぶん"], ["料理", "りょうり"], ["作", "つく"]] },
+                { text: "<ruby>寮<rt>りょう</rt></ruby>の<ruby>部屋<rt>へや</rt></ruby>から何が<ruby>見<rt>み</rt></ruby>えますか。", furigana: [["寮", "りょう"], ["部屋", "へや"], ["見", "み"]] },
+                { text: "あなたが<ruby>住<rt>す</rt></ruby>むところから<ruby>富士山<rt>ふじさん</rt></ruby>が<ruby>見<rt>み</rt></ruby>えますか。", furigana: [["住", "す"], ["富士山", "ふじさん"], ["見", "み"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>の<ruby>新聞<rt>しんぶん</rt></ruby>が<ruby>読<rt>よ</rt></ruby>めますか。", furigana: [["日本語", "にほんご"], ["新聞", "しんぶん"], ["読", "よ"]] },
+                { text: "あなたは<ruby>泳<rt>およ</rt></ruby>げますか。何メートルぐらい<ruby>泳<rt>およ</rt></ruby>げますか。", furigana: [["泳", "およ"]] }
+            ],
+            28: [
+                { text: "<ruby>暇<rt>ひま</rt></ruby>な<ruby>時<rt>とき</rt></ruby>、何をしていますか。", furigana: [["暇", "ひま"], ["時", "とき"]] },
+                { text: "<ruby>高校生<rt>こうこうせい</rt></ruby>の<ruby>時<rt>とき</rt></ruby>、<ruby>毎日<rt>まいにち</rt></ruby><ruby>学校<rt>がっこう</rt></ruby>が<ruby>終<rt>お</rt></ruby>わってから、よく何をしていましたか。", furigana: [["高校生", "こうこうせい"], ["時", "とき"], ["毎日", "まいにち"], ["学校", "がっこう"], ["終", "お"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>日本語<rt>にほんご</rt></ruby>の<ruby>勉強<rt>べんきょう</rt></ruby>を<ruby>続<rt>つづ</rt></ruby>けながら<ruby>仕事<rt>しごと</rt></ruby>をしますか。", furigana: [["日本", "にほん"], ["日本語", "にほんご"], ["勉強", "べんきょう"], ["続", "つづ"], ["仕事", "しごと"]] },
+                { text: "<ruby>教室<rt>きょうしつ</rt></ruby>で<ruby>食<rt>た</rt></ruby>べながら、<ruby>勉強<rt>べんきょう</rt></ruby>してもいいですか。", furigana: [["教室", "きょうしつ"], ["食", "た"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>はどう<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本語", "にほんご"], ["思", "おも"]] },
+                { text: "どうして<ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>していますか。", furigana: [["日本語", "にほんご"], ["勉強", "べんきょう"]] },
+                { text: "あなたの<ruby>仕事<rt>しごと</rt></ruby>についてどう<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["仕事", "しごと"], ["思", "おも"]] }
+            ],
+            29: [
+                { text: "今、<ruby>電気<rt>でんき</rt></ruby>がついていますか。", furigana: [["電気", "でんき"]] },
+                { text: "今、<ruby>教室<rt>きょうしつ</rt></ruby>の<ruby>窓<rt>まど</rt></ruby>が<ruby>閉<rt>し</rt></ruby>まっていますか。<ruby>開<rt>あ</rt></ruby>いていますか。", furigana: [["教室", "きょうしつ"], ["窓", "まど"], ["閉", "し"], ["開", "あ"]] },
+                { text: "今<ruby>部屋<rt>へや</rt></ruby>の<ruby>扇風機<rt>せんぷうき</rt></ruby>はどうなっていますか。", furigana: [["部屋", "へや"], ["扇風機", "せんぷうき"]] },
+                { text: "もう<ruby>宿題<rt>しゅくだい</rt></ruby>をしてしまいましたか。", furigana: [["宿題", "しゅくだい"]] },
+                { text: "今まで<ruby>友達<rt>ともだち</rt></ruby>とけんかしてしまったことがありますか。", furigana: [["友達", "ともだち"]] },
+                { text: "今までお<ruby>金<rt>かね</rt></ruby>を<ruby>落<rt>お</rt></ruby>としてしまったことがありますか。", furigana: [["お金", "おかね"], ["落", "お"]] },
+                { text: "<ruby>高校生<rt>こうこうせい</rt></ruby>の<ruby>時<rt>とき</rt></ruby>、<ruby>宿題<rt>しゅくだい</rt></ruby>を<ruby>忘<rt>わす</rt></ruby>れてしまったことがありますか。", furigana: [["高校生", "こうこうせい"], ["時", "とき"], ["宿題", "しゅくだい"], ["忘", "わす"]] }
+            ],
+            30: [
+                { text: "<ruby>教室<rt>きょうしつ</rt></ruby>の<ruby>壁<rt>かべ</rt></ruby>にカレンダがかけてありますか。", furigana: [["教室", "きょうしつ"], ["壁", "かべ"]] },
+                { text: "<ruby>教室<rt>きょうしつ</rt></ruby>に何が<ruby>置<rt>お</rt></ruby>いてありますか。", furigana: [["教室", "きょうしつ"], ["置", "お"]] },
+                { text: "<ruby>部屋<rt>へや</rt></ruby>に何が<ruby>貼<rt>は</rt></ruby>ってありますか。", furigana: [["部屋", "へや"], ["貼", "は"]] },
+                { text: "<ruby>授業<rt>じゅぎょう</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>に、何をしておきますか。", furigana: [["授業", "じゅぎょう"], ["前", "まえ"]] },
+                { text: "<ruby>授業<rt>じゅぎょう</rt></ruby>が<ruby>終<rt>お</rt></ruby>わった<ruby>後<rt>あと</rt></ruby>で、なにをしておきますか。", furigana: [["授業", "じゅぎょう"], ["終", "お"], ["後", "あと"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>く<ruby>前<rt>まえ</rt></ruby>に、何を<ruby>準備<rt>じゅんび</rt></ruby>しておいたらいいですか。", furigana: [["日本", "にほん"], ["行", "い"], ["前", "まえ"], ["準備", "じゅんび"]] },
+                { text: "パーティーの<ruby>前<rt>まえ</rt></ruby>に、何を<ruby>準備<rt>じゅんび</rt></ruby>しておきますか。", furigana: [["前", "まえ"], ["準備", "じゅんび"]] }
+            ],
+            31: [
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>に<ruby>遅<rt>おく</rt></ruby>れそうになったら、どうしますか。", furigana: [["会社", "かいしゃ"], ["遅", "おく"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>く<ruby>前<rt>まえ</rt></ruby>に、どんな<ruby>準備<rt>じゅんび</rt></ruby>をしますか。", furigana: [["日本", "にほん"], ["行", "い"], ["前", "まえ"], ["準備", "じゅんび"]] },
+                { text: "<ruby>仕事<rt>しごと</rt></ruby>が<ruby>忙<rt>いそが</rt></ruby>しくて、<ruby>勉強<rt>べんきょう</rt></ruby>する<ruby>時間<rt>じかん</rt></ruby>がなかったら、どうしますか。", furigana: [["仕事", "しごと"], ["忙", "いそが"], ["勉強", "べんきょう"], ["時間", "じかん"]] },
+                { text: "<ruby>友達<rt>ともだち</rt></ruby>が<ruby>病気<rt>びょうき</rt></ruby>になったら、何をしてあげますか。", furigana: [["友達", "ともだち"], ["病気", "びょうき"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>道<rt>みち</rt></ruby>に<ruby>迷<rt>まよ</rt></ruby>ったら、どうしますか。", furigana: [["日本", "にほん"], ["道", "みち"], ["迷", "まよ"]] },
+                { text: "<ruby>財布<rt>さいふ</rt></ruby>を<ruby>落<rt>お</rt></ruby>としてしまったら、どうしますか。", furigana: [["財布", "さいふ"], ["落", "お"]] },
+                { text: "<ruby>試験<rt>しけん</rt></ruby>に<ruby>合格<rt>ごうかく</rt></ruby>したら、何をしたいですか。", furigana: [["試験", "しけん"], ["合格", "ごうかく"]] }
+            ],
+            32: [
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>怪我<rt>けが</rt></ruby>をしてしまったら、どうしますか。", furigana: [["会社", "かいしゃ"], ["怪我", "けが"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>の<ruby>先生<rt>せんせい</rt></ruby>に<ruby>質問<rt>しつもん</rt></ruby>があるんですが、どうやって<ruby>聞<rt>き</rt></ruby>きますか。", furigana: [["日本語", "にほんご"], ["先生", "せんせい"], ["質問", "しつもん"], ["聞", "き"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>友達<rt>ともだち</rt></ruby>を<ruby>作<rt>つく</rt></ruby>るにはどうしたらいいですか。", furigana: [["日本", "にほん"], ["友達", "ともだち"], ["作", "つく"]] },
+                { text: "<ruby>仕事<rt>しごと</rt></ruby>で<ruby>失敗<rt>しっぱい</rt></ruby>してしまったら、どうしますか。", furigana: [["仕事", "しごと"], ["失敗", "しっぱい"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby>になるにはどうしたらいいですか。", furigana: [["日本語", "にほんご"], ["上手", "じょうず"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>生活<rt>せいかつ</rt></ruby>するのに、どんなことが<ruby>大切<rt>たいせつ</rt></ruby>ですか。", furigana: [["日本", "にほん"], ["生活", "せいかつ"], ["大切", "たいせつ"]] },
+                { text: "<ruby>試験<rt>しけん</rt></ruby>に<ruby>落<rt>お</rt></ruby>ちたら、どうしますか。", furigana: [["試験", "しけん"], ["落", "お"]] }
+            ],
+            33: [
+                { text: "<ruby>日本<rt>にほん</rt></ruby>に<ruby>行<rt>い</rt></ruby>く<ruby>前<rt>まえ</rt></ruby>に、どんなことを<ruby>勉強<rt>べんきょう</rt></ruby>しておきたいですか。", furigana: [["日本", "にほん"], ["行", "い"], ["前", "まえ"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>日本語<rt>にほんご</rt></ruby>で<ruby>自己紹介<rt>じこしょうかい</rt></ruby>してください。", furigana: [["日本語", "にほんご"], ["自己紹介", "じこしょうかい"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>働<rt>はたら</rt></ruby>く<ruby>時<rt>とき</rt></ruby>、どんなことに<ruby>気<rt>き</rt></ruby>をつけますか。", furigana: [["日本", "にほん"], ["働", "はたら"], ["時", "とき"], ["気", "き"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>文化<rt>ぶんか</rt></ruby>で、どんなことが<ruby>面白<rt>おもしろ</rt></ruby>いと<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本", "にほん"], ["文化", "ぶんか"], ["面白", "おもしろ"], ["思", "おも"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>生活<rt>せいかつ</rt></ruby>するのに、どんな<ruby>準備<rt>じゅんび</rt></ruby>が必要ですか。", furigana: [["日本", "にほん"], ["生活", "せいかつ"], ["準備", "じゅんび"]] },
+                { text: "<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>上司<rt>じょうし</rt></ruby>に<ruby>話<rt>はな</rt></ruby>す<ruby>時<rt>とき</rt></ruby>、どんなことに<ruby>気<rt>き</rt></ruby>をつけますか。", furigana: [["会社", "かいしゃ"], ["上司", "じょうし"], ["話", "はな"], ["時", "とき"], ["気", "き"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>食事<rt>しょくじ</rt></ruby>で、どんなものが<ruby>食<rt>た</rt></ruby>べてみたいですか。", furigana: [["日本", "にほん"], ["食事", "しょくじ"], ["食", "た"]] }
+            ],
+            34: [
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>働<rt>はたら</rt></ruby>くなら、どんな<ruby>仕事<rt>しごと</rt></ruby>がしたいですか。", furigana: [["日本", "にほん"], ["働", "はたら"], ["仕事", "しごと"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>生活<rt>せいかつ</rt></ruby>で、どんなことが<ruby>難<rt>むずか</rt></ruby>しいと<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本", "にほん"], ["生活", "せいかつ"], ["難", "むずか"], ["思", "おも"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>友達<rt>ともだち</rt></ruby>が<ruby>欲<rt>ほ</rt></ruby>しいなら、どうしますか。", furigana: [["日本", "にほん"], ["友達", "ともだち"], ["欲", "ほ"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>交通<rt>こうつう</rt></ruby><ruby>機関<rt>きかん</rt></ruby>を<ruby>使<rt>つか</rt></ruby>うなら、どんなことに<ruby>気<rt>き</rt></ruby>をつけますか。", furigana: [["日本", "にほん"], ["交通機関", "こうつうきかん"], ["使", "つか"], ["気", "き"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>病気<rt>びょうき</rt></ruby>になったら、どうしますか。", furigana: [["日本", "にほん"], ["病気", "びょうき"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>祭<rt>まつ</rt></ruby>りに<ruby>参加<rt>さんか</rt></ruby>するなら、どんなことをしたいですか。", furigana: [["日本", "にほん"], ["祭", "まつ"], ["参加", "さんか"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>家<rt>いえ</rt></ruby>を<ruby>借<rt>か</rt></ruby>りるなら、どんなことに<ruby>気<rt>き</rt></ruby>をつけますか。", furigana: [["日本", "にほん"], ["家", "いえ"], ["借", "か"], ["気", "き"]] }
+            ],
+            35: [
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>働<rt>はたら</rt></ruby>く<ruby>時<rt>とき</rt></ruby>、どんな<ruby>規則<rt>きそく</rt></ruby>を<ruby>守<rt>まも</rt></ruby>りますか。", furigana: [["日本", "にほん"], ["会社", "かいしゃ"], ["働", "はたら"], ["時", "とき"], ["規則", "きそく"], ["守", "まも"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>文化<rt>ぶんか</rt></ruby>を<ruby>学<rt>まな</rt></ruby>ぶなら、どんなことを<ruby>勉強<rt>べんきょう</rt></ruby>したいですか。", furigana: [["日本", "にほん"], ["文化", "ぶんか"], ["学", "まな"], ["勉強", "べんきょう"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>生活<rt>せいかつ</rt></ruby>するなら、どんな<ruby>習慣<rt>しゅうかん</rt></ruby>を<ruby>身<rt>み</rt></ruby>につけたいですか。", furigana: [["日本", "にほん"], ["生活", "せいかつ"], ["習慣", "しゅうかん"], ["身", "み"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>旅行<rt>りょこう</rt></ruby>するなら、どこへ<ruby>行<rt>い</rt></ruby>きたいですか。", furigana: [["日本", "にほん"], ["旅行", "りょこう"], ["行", "い"]] },
+                                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>季節<rt>きせつ</rt></ruby>で、どの<ruby>季節<rt>きせつ</rt></ruby>が<ruby>好<rt>す</rt></ruby>きですか。", furigana: [["日本", "にほん"], ["季節", "きせつ"], ["好", "す"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>で<ruby>働<rt>はたら</rt></ruby>くなら、どんな<ruby>準備<rt>じゅんび</rt></ruby>をしますか。", furigana: [["日本", "にほん"], ["働", "はたら"], ["準備", "じゅんび"]] },
+                { text: "<ruby>日本<rt>にほん</rt></ruby>の<ruby>生活<rt>せいかつ</rt></ruby>で、どんなことが<ruby>楽<rt>たの</rt></ruby>しいと<ruby>思<rt>おも</rt></ruby>いますか。", furigana: [["日本", "にほん"], ["生活", "せいかつ"], ["楽", "たの"], ["思", "おも"]] }
+            ]
         };
 
-        // === DOM Elements ===
+        // JavaScript logic for the test
+        let currentLesson = null;
+        let currentQuestionIndex = 0;
+        let studentAnswers = [];
+
         const lessonSelect = document.getElementById('lesson-select');
         const startTestBtn = document.getElementById('start-test-btn');
         const questionContainer = document.getElementById('question-container');
@@ -256,39 +545,40 @@
         const completeButton = document.getElementById('complete-button');
         const studentNameInput = document.getElementById('student-name');
         const studentClassInput = document.getElementById('student-class');
+        const showHistoryBtn = document.getElementById('show-history-btn');
 
-        let currentLesson = null;
-        let currentQuestionIndex = 0;
-        let studentAnswers = [];
-
-        // === Enable lesson select when info filled ===
+        // Enable lesson selection when student info is filled
         studentNameInput.addEventListener('input', checkStudentInfo);
         studentClassInput.addEventListener('input', checkStudentInfo);
 
         function checkStudentInfo() {
-            lessonSelect.disabled = !(studentNameInput.value.trim() && studentClassInput.value.trim());
+            if (studentNameInput.value.trim() && studentClassInput.value.trim()) {
+                lessonSelect.disabled = false;
+            } else {
+                lessonSelect.disabled = true;
+            }
         }
 
-        // === Start Test ===
+        // Start test
         startTestBtn.addEventListener('click', () => {
-            if (!lessonSelect.value) {
+            if (lessonSelect.value) {
+                currentLesson = lessonSelect.value;
+                currentQuestionIndex = 0;
+                studentAnswers = [];
+                questionContainer.style.display = 'block';
+                startTestBtn.disabled = true;
+                lessonSelect.disabled = true;
+                showQuestion();
+            } else {
                 alert('Vui lòng chọn bài học!');
-                return;
             }
-            currentLesson = lessonSelect.value;
-            currentQuestionIndex = 0;
-            studentAnswers = [];
-            questionContainer.style.display = 'block';
-            startTestBtn.disabled = true;
-            lessonSelect.disabled = true;
-            showQuestion();
         });
 
-        // === Show Question ===
+        // Show current question
         function showQuestion() {
             if (currentQuestionIndex < questions[currentLesson].length) {
-                const q = questions[currentLesson][currentQuestionIndex];
-                currentQuestion.innerHTML = q.text;
+                const question = questions[currentLesson][currentQuestionIndex];
+                currentQuestion.innerHTML = question.text;
                 questionProgress.textContent = `Câu ${currentQuestionIndex + 1}/${questions[currentLesson].length}`;
                 answerInput.value = '';
                 checkAnswerBtn.style.display = 'inline-block';
@@ -299,26 +589,28 @@
             }
         }
 
-        // === Submit Answer ===
+        // Check answer and move to next question
         checkAnswerBtn.addEventListener('click', () => {
             const answer = answerInput.value.trim();
-            if (!answer) {
+            if (answer) {
+                studentAnswers.push({
+                    question: questions[currentLesson][currentQuestionIndex].text,
+                    answer: answer
+                });
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
                 alert('Vui lòng nhập câu trả lời!');
-                return;
             }
-            studentAnswers.push({
-                question: questions[currentLesson][currentQuestionIndex].text,
-                answer: answer
-            });
-            currentQuestionIndex++;
-            showQuestion();
         });
 
-        // === Complete Test ===
+        // Complete test and save to Firebase
         completeButton.addEventListener('click', async () => {
+            const studentName = studentNameInput.value.trim();
+            const studentClass = studentClassInput.value.trim();
             const testData = {
-                studentName: studentNameInput.value.trim(),
-                studentClass: studentClassInput.value.trim(),
+                studentName: studentName,
+                studentClass: studentClass,
                 lesson: currentLesson,
                 answers: studentAnswers,
                 timestamp: serverTimestamp()
@@ -326,14 +618,15 @@
 
             try {
                 await addDoc(collection(db, 'testHistoryKaiwa'), testData);
-                alert('Hoàn thành! Kết quả đã được lưu.');
+                alert('Hoàn thành bài kiểm tra! Kết quả đã được lưu.');
                 resetTest();
             } catch (error) {
-                console.error("Lỗi lưu:", error);
-                alert('Lỗi lưu kết quả. Vui lòng thử lại!');
+                console.error('Lỗi khi lưu dữ liệu:', error);
+                alert('Có lỗi xảy ra khi lưu kết quả. Vui lòng thử lại!');
             }
         });
 
+        // Reset test
         function resetTest() {
             questionContainer.style.display = 'none';
             startTestBtn.disabled = false;
@@ -342,10 +635,13 @@
             currentLesson = null;
             currentQuestionIndex = 0;
             studentAnswers = [];
+            answerInput.value = '';
         }
 
-        // Load full questions object here if needed (giữ nguyên như bạn có)
-        // ... (dán toàn bộ object questions từ file cũ vào đây)
+        // Show test history (placeholder for now)
+        showHistoryBtn.addEventListener('click', () => {
+            alert('Chức năng xem lịch sử kiểm tra đang được phát triển!');
+        });
     </script>
 </body>
 </html>
