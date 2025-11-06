@@ -13,26 +13,22 @@
             background-color: #F9FAFB;
             overflow-x: hidden;
         }
-
         header {
             background-color: #1E3A8A;
             color: white;
             text-align: center;
             padding: 1.5rem;
         }
-
         header h1 {
             margin: 0;
             font-size: 2rem;
             font-weight: 700;
         }
-
         main {
             max-width: 900px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
-
         .filter-section {
             background-color: #FFFFFF;
             padding: 1.5rem;
@@ -43,14 +39,12 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-
         .filter-section label {
             font-weight: 500;
             margin-bottom: 0.5rem;
             display: block;
             font-size: 1rem;
         }
-
         .filter-section input,
         .filter-section select {
             width: 100%;
@@ -60,7 +54,6 @@
             font-size: 1rem;
             box-sizing: border-box;
         }
-
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -68,30 +61,25 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             background-color: #FFFFFF;
         }
-
         .table-container::-webkit-scrollbar {
             height: 8px;
         }
-
         .table-container::-webkit-scrollbar-thumb {
             background-color: #D1D5DB;
             border-radius: 4px;
         }
-
         table {
             width: 100%;
-            min-width: 1000px; /* Increased to accommodate wider headers */
+            min-width: 1000px;
             border-collapse: collapse;
         }
-
         th, td {
             padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid #E5E7EB;
             font-size: 1rem;
-            white-space: nowrap; /* Prevent text wrapping in cells */
+            white-space: nowrap;
         }
-
         th {
             background-color: #F3F4F6;
             font-weight: 500;
@@ -99,43 +87,49 @@
             top: 0;
             z-index: 10;
         }
-
         th.checkbox-column {
             width: 40px;
         }
+        th:nth-child(2) { min-width: 150px; }
+        th:nth-child(3) { min-width: 100px; }
+        th:nth-child(4) { min-width: 150px; }
+        th:nth-child(5) { min-width: 100px; }
+        th:nth-child(6) { min-width: 200px; }
+        th:nth-child(7) { min-width: 200px; }
+        th:nth-child(8) { min-width: 150px; }
 
-        th:nth-child(2) { /* Thời gian */
-            min-width: 150px;
+        /* CỘT PHẢN HỒI: CỐ ĐỊNH VỊ TRÍ NÚT SỬA */
+        .feedback-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+            overflow: hidden;
         }
-
-        th:nth-child(3) { /* Tên bài */
-            min-width: 100px;
+        .feedback-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        th:nth-child(4) { /* Họ và Tên */
-            min-width: 150px;
+        .feedback-btn {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-
-        th:nth-child(5) { /* Lớp */
-            min-width: 100px;
-        }
-
-        th:nth-child(6) { /* Câu hỏi */
-            min-width: 200px;
-        }
-
-        th:nth-child(7) { /* Câu trả lời */
-            min-width: 200px;
-        }
-
-        th:nth-child(8) { /* Phản hồi */
-            min-width: 150px;
+        .feedback-btn:hover {
+            background-color: #2563EB;
         }
 
         .checkbox-column {
             text-align: center;
         }
-
         button {
             background-color: #10B981;
             color: white;
@@ -148,30 +142,15 @@
             transition: background-color 0.3s;
             margin-top: 1rem;
         }
-
         button:hover {
             background-color: #059669;
         }
-
         .delete-btn {
             background-color: #EF4444;
         }
-
         .delete-btn:hover {
             background-color: #DC2626;
         }
-
-        .feedback-btn {
-            background-color: #3B82F6;
-            padding: 0.5rem 1rem;
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .feedback-btn:hover {
-            background-color: #2563EB;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -184,7 +163,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background-color: #FFFFFF;
             padding: 1.5rem;
@@ -194,19 +172,16 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             animation: slideIn 0.3s ease;
         }
-
         @keyframes slideIn {
             from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
         .modal-content h2 {
             margin: 0 0 1rem;
             font-size: 1.25rem;
             font-weight: 700;
             color: #1E3A8A;
         }
-
         .modal-content input,
         .modal-content textarea {
             width: 100%;
@@ -216,26 +191,21 @@
             font-size: 1rem;
             margin-bottom: 1rem;
         }
-
         .modal-buttons {
             display: flex;
             justify-content: flex-end;
             gap: 0.5rem;
         }
-
         .modal-buttons button {
             padding: 0.5rem 1rem;
             margin: 0;
         }
-
         .modal-buttons .cancel-btn {
             background-color: #D1D5DB;
         }
-
         .modal-buttons .cancel-btn:hover {
             background-color: #B0B7C0;
         }
-
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -243,49 +213,17 @@
             color: white;
             font-size: 0.9rem;
         }
-
-        ruby {
-            ruby-align: center;
-        }
-
-        rt {
-            font-size: 0.6em;
-            color: #555;
-        }
-
         @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.5rem;
-            }
-
-            .filter-section {
-                flex-direction: column;
-            }
-
-            .filter-section div {
-                width: 100%;
-            }
-
-            button {
-                width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 1rem;
-            }
-
-            .modal-content h2 {
-                font-size: 1.1rem;
-            }
-
-            table {
-                min-width: 600px; /* Adjusted for mobile */
-            }
-
-            th, td {
-                white-space: normal; /* Allow wrapping on mobile */
-            }
+            header h1 { font-size: 1.5rem; }
+            .filter-section { flex-direction: column; }
+            .filter-section div { width: 100%; }
+            button { width: 100%; }
+            .modal-content { width: 95%; padding: 1rem; }
+            .modal-content h2 { font-size: 1.1rem; }
+            table { min-width: 600px; }
+            th, td { white-space: normal; }
+            .feedback-cell { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+            .feedback-btn { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -311,40 +249,8 @@
                 <label for="filter-lesson">Bài:</label>
                 <select id="filter-lesson">
                     <option value="">-- Tất cả --</option>
-                    <option value="1">Bài 1</option>
-                    <option value="3">Bài 3</option>
-                    <option value="4">Bài 4</option>
-                    <option value="5">Bài 5</option>
-                    <option value="6">Bài 6</option>
-                    <option value="7">Bài 7</option>
-                    <option value="8">Bài 8</option>
-                    <option value="9">Bài 9</option>
-                    <option value="10">Bài 10</option>
-                    <option value="11">Bài 11</option>
-                    <option value="12">Bài 12</option>
-                    <option value="13">Bài 13</option>
-                    <option value="14">Bài 14</option>
-                    <option value="15">Bài 15</option>
-                    <option value="16">Bài 16</option>
-                    <option value="17">Bài 17</option>
-                    <option value="18">Bài 18</option>
-                    <option value="19">Bài 19</option>
-                    <option value="20">Bài 20</option>
-                    <option value="21">Bài 21</option>
-                    <option value="22">Bài 22</option>
-                    <option value="23">Bài 23</option>
-                    <option value="24">Bài 24</option>
-                    <option value="25">Bài 25</option>
-                    <option value="26">Bài 26</option>
-                    <option value="27">Bài 27</option>
-                    <option value="28">Bài 28</option>
-                    <option value="29">Bài 29</option>
-                    <option value="30">Bài 30</option>
-                    <option value="31">Bài 31</option>
-                    <option value="32">Bài 32</option>
-                    <option value="33">Bài 33</option>
-                    <option value="34">Bài 34</option>
-                    <option value="35">Bài 35</option>
+                    <!-- Các bài từ 1 đến 35 -->
+                    <option value="1">Bài 1</option><option value="3">Bài 3</option><option value="4">Bài 4</option><option value="5">Bài 5</option><option value="6">Bài 6</option><option value="7">Bài 7</option><option value="8">Bài 8</option><option value="9">Bài 9</option><option value="10">Bài 10</option><option value="11">Bài 11</option><option value="12">Bài 12</option><option value="13">Bài 13</option><option value="14">Bài 14</option><option value="15">Bài 15</option><option value="16">Bài 16</option><option value="17">Bài 17</option><option value="18">Bài 18</option><option value="19">Bài 19</option><option value="20">Bài 20</option><option value="21">Bài 21</option><option value="22">Bài 22</option><option value="23">Bài 23</option><option value="24">Bài 24</option><option value="25">Bài 25</option><option value="26">Bài 26</option><option value="27">Bài 27</option><option value="28">Bài 28</option><option value="29">Bài 29</option><option value="30">Bài 30</option><option value="31">Bài 31</option><option value="32">Bài 32</option><option value="33">Bài 33</option><option value="34">Bài 34</option><option value="35">Bài 35</option>
                 </select>
             </div>
         </section>
@@ -368,6 +274,8 @@
                 </table>
             </div>
         </section>
+
+        <!-- Modal Xóa -->
         <div class="modal" id="password-modal">
             <div class="modal-content">
                 <h2>Nhập mật khẩu</h2>
@@ -378,6 +286,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Phản hồi -->
         <div class="modal" id="feedback-modal">
             <div class="modal-content">
                 <h2>Chỉnh sửa phản hồi</h2>
@@ -394,11 +304,12 @@
     </footer>
 
     <script type="module">
-        // Import Firebase modular SDK
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { 
+            getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy, 
+            updateDoc, getDoc 
+        } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAfy4QMD9_7PyFHpInNdKDRWuW4AYCtLJ4",
             authDomain: "history-e4633.firebaseapp.com",
@@ -409,69 +320,58 @@
             measurementId: "G-DC055090BW"
         };
 
-        // Initialize Firebase
         let db;
         try {
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
         } catch (error) {
-            console.error("Lỗi khi khởi tạo Firebase:", error);
-            alert("Không thể kết nối với cơ sở dữ liệu. Vui lòng kiểm tra kết nối mạng hoặc cấu hình Firebase!");
+            console.error("Lỗi khởi tạo Firebase:", error);
+            alert("Không thể kết nối với cơ sở dữ liệu!");
         }
 
-        // Load history with repeated fields
         async function loadHistory() {
-            const table = document.getElementById("history-table");
-            if (!table) {
-                console.error("Table element with ID 'history-table' not found!");
-                alert("Không thể tải lịch sử: Bảng không tồn tại!");
-                return;
-            }
+            const tbody = document.querySelector("#history-table tbody");
+            tbody.innerHTML = "";
 
-            let historyTableBody = table.querySelector("tbody");
-            if (!historyTableBody) {
-                historyTableBody = document.createElement("tbody");
-                table.appendChild(historyTableBody);
-            }
-
-            historyTableBody.innerHTML = "";
             const filterDate = document.getElementById("filter-date").value;
             const filterClass = document.getElementById("filter-class").value.trim().toLowerCase();
             const filterName = document.getElementById("filter-name").value.trim().toLowerCase();
             const filterLesson = document.getElementById("filter-lesson").value;
 
-            if (!db) {
-                alert("Không thể tải lịch sử: Kết nối cơ sở dữ liệu thất bại!");
-                return;
-            }
+            if (!db) return alert("Kết nối CSDL thất bại!");
 
             try {
                 const q = query(collection(db, 'testHistoryKaiwa'), orderBy('timestamp', 'desc'));
-                const querySnapshot = await getDocs(q);
+                const snapshot = await getDocs(q);
 
-                if (querySnapshot.empty) {
-                    historyTableBody.innerHTML = '<tr><td colspan="8">Chưa có lịch sử trả lời.</td></tr>';
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="8">Chưa có lịch sử.</td></tr>';
                     return;
                 }
 
                 let hasResults = false;
-                querySnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const timestamp = data.timestamp && data.timestamp.toDate
-                        ? new Date(data.timestamp.toDate())
-                        : null;
+
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const timestamp = data.timestamp?.toDate ? new Date(data.timestamp.toDate()) : null;
                     const dateStr = timestamp ? timestamp.toISOString().split('T')[0] : '';
+
                     const matchesDate = !filterDate || dateStr === filterDate;
-                    const matchesClass = !filterClass || (data.studentClass && data.studentClass.toLowerCase().includes(filterClass));
-                    const matchesName = !filterName || (data.studentName && data.studentName.toLowerCase().includes(filterName));
-                    const matchesLesson = !filterLesson || (data.lesson && data.lesson === filterLesson);
+                    const matchesClass = !filterClass || (data.studentClass?.toLowerCase().includes(filterClass));
+                    const matchesName = !filterName || (data.studentName?.toLowerCase().includes(filterName));
+                    const matchesLesson = !filterLesson || (data.lesson == filterLesson);
 
                     if (matchesDate && matchesClass && matchesName && matchesLesson) {
                         hasResults = true;
                         const answers = data.answers || [];
+
                         answers.forEach((ans, index) => {
+                            const feedback = ans.feedback || 'Chưa có phản hồi';
+
                             const row = document.createElement('tr');
-                            row.setAttribute('data-id', doc.id);
+                            row.dataset.id = docSnap.id;
+                            row.dataset.answerIndex = index;
+
                             row.innerHTML = `
                                 <td class="checkbox-column"><input type="checkbox" class="row-checkbox"></td>
                                 <td>${timestamp ? timestamp.toLocaleString('vi-VN') : 'N/A'}</td>
@@ -480,196 +380,147 @@
                                 <td>${data.studentClass || 'N/A'}</td>
                                 <td>${ans.question || 'N/A'}</td>
                                 <td>${ans.answer || 'N/A'}</td>
-                                <td>${data.feedback || 'Chưa có phản hồi'} <button class="feedback-btn" data-id="${doc.id}">Sửa</button></td>
+                                <td class="feedback-cell">
+                                    <span class="feedback-text" title="${feedback}">${feedback}</span>
+                                    <button class="feedback-btn" data-id="${docSnap.id}" data-index="${index}">Sửa</button>
+                                </td>
                             `;
-                            historyTableBody.appendChild(row);
+                            tbody.appendChild(row);
                         });
                     }
                 });
 
                 if (!hasResults) {
-                    historyTableBody.innerHTML = '<tr><td colspan="8">Không tìm thấy kết quả phù hợp.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="8">Không tìm thấy kết quả.</td></tr>';
                 }
 
                 updateSelectAllCheckbox();
             } catch (error) {
-                console.error("Lỗi khi tải lịch sử:", error);
-                let errorMessage = "Đã xảy ra lỗi khi tải lịch sử!";
-                if (error.code === 'permission-denied') {
-                    errorMessage = "Không có quyền truy cập dữ liệu. Vui lòng kiểm tra cấu hình Firestore!";
-                } else if (error.code === 'unavailable') {
-                    errorMessage = "Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!";
-                }
-                alert(errorMessage);
+                console.error("Lỗi tải dữ liệu:", error);
+                alert("Lỗi tải lịch sử!");
             }
         }
 
-        // Update select-all checkbox state
         function updateSelectAllCheckbox() {
             const selectAll = document.getElementById('select-all');
             const checkboxes = document.querySelectorAll('.row-checkbox');
-            if (selectAll && checkboxes.length > 0) {
-                selectAll.checked = Array.from(checkboxes).every(cb => cb.checked);
-            }
+            selectAll.checked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
         }
 
-        // Handle select-all checkbox
         function handleSelectAll() {
-            const selectAll = document.getElementById('select-all');
-            const checkboxes = document.querySelectorAll('.row-checkbox');
-            if (selectAll && checkboxes.length > 0) {
-                checkboxes.forEach(cb => cb.checked = selectAll.checked);
-            }
+            const checked = document.getElementById('select-all').checked;
+            document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = checked);
         }
 
-        // Show password modal
         function showPasswordModal() {
-            const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
-            if (selectedCheckboxes.length === 0) {
-                alert('Vui lòng chọn ít nhất một mục để xóa!');
-                return;
+            if (!document.querySelector('.row-checkbox:checked')) {
+                return alert('Vui lòng chọn ít nhất một mục!');
             }
-            const modal = document.getElementById('password-modal');
-            const passwordInput = document.getElementById('password-input');
-            if (modal && passwordInput) {
-                passwordInput.value = '';
-                modal.style.display = 'flex';
-            }
+            document.getElementById('password-modal').style.display = 'flex';
+            document.getElementById('password-input').value = '';
         }
 
-        // Hide password modal
         function hidePasswordModal() {
-            const modal = document.getElementById('password-modal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
+            document.getElementById('password-modal').style.display = 'none';
         }
 
-        // Delete selected history
         async function deleteHistory() {
-            const passwordInput = document.getElementById('password-input');
-            if (passwordInput && passwordInput.value !== '112') {
-                alert('Mật khẩu không đúng!');
-                return;
-            }
+            const password = document.getElementById('password-input').value;
+            if (password !== '112') return alert('Mật khẩu sai!');
 
-            if (!db) {
-                alert('Không thể xóa: Kết nối cơ sở dữ liệu thất bại!');
-                return;
-            }
-
-            const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
-            if (selectedCheckboxes.length === 0) {
-                alert('Không có mục nào được chọn để xóa!');
-                return;
-            }
-
+            const selected = document.querySelectorAll('.row-checkbox:checked');
             try {
-                for (const checkbox of selectedCheckboxes) {
-                    const row = checkbox.closest('tr');
-                    const docId = row.getAttribute('data-id');
+                for (const cb of selected) {
+                    const row = cb.closest('tr');
+                    const docId = row.dataset.id;
                     await deleteDoc(doc(db, 'testHistoryKaiwa', docId));
                 }
                 hidePasswordModal();
                 loadHistory();
-                alert('Đã xóa các mục được chọn thành công!');
+                alert('Xóa thành công!');
             } catch (error) {
-                console.error('Lỗi khi xóa dữ liệu:', error);
-                let errorMessage = 'Đã xảy ra lỗi khi xóa dữ liệu!';
-                if (error.code === 'permission-denied') {
-                    errorMessage = 'Không có quyền xóa dữ liệu. Vui lòng kiểm tra cấu hình Firestore!';
-                } else if (error.code === 'unavailable') {
-                    errorMessage = 'Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!';
-                }
-                alert(errorMessage);
+                console.error('Lỗi xóa:', error);
+                alert('Lỗi khi xóa dữ liệu!');
             }
         }
 
-        // Show feedback modal
-        function showFeedbackModal(docId, currentFeedback) {
+        function showFeedbackModal(docId, answerIndex, currentFeedback) {
             const modal = document.getElementById('feedback-modal');
-            const feedbackInput = document.getElementById('feedback-input');
-            if (modal && feedbackInput) {
-                feedbackInput.value = currentFeedback || '';
-                modal.style.display = 'flex';
-                modal.dataset.docId = docId;
-            }
+            const input = document.getElementById('feedback-input');
+            input.value = currentFeedback === 'Chưa có phản hồi' ? '' : currentFeedback;
+            modal.style.display = 'flex';
+            modal.dataset.docId = docId;
+            modal.dataset.answerIndex = answerIndex;
         }
 
-        // Hide feedback modal
         function hideFeedbackModal() {
             const modal = document.getElementById('feedback-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                delete modal.dataset.docId;
-            }
+            modal.style.display = 'none';
+            delete modal.dataset.docId;
+            delete modal.dataset.answerIndex;
         }
 
-        // Save feedback
         async function saveFeedback() {
             const modal = document.getElementById('feedback-modal');
-            const docId = modal?.dataset.docId;
-            const feedbackInput = document.getElementById('feedback-input');
+            const docId = modal.dataset.docId;
+            const answerIndex = parseInt(modal.dataset.answerIndex);
+            const feedback = document.getElementById('feedback-input').value.trim();
 
-            if (!db || !docId || !feedbackInput) {
-                alert('Không thể lưu phản hồi: Kết nối cơ sở dữ liệu thất bại hoặc ID không hợp lệ!');
-                return;
-            }
+            if (!docId || isNaN(answerIndex)) return alert("Lỗi: Không xác định được câu hỏi!");
 
             try {
-                await updateDoc(doc(db, 'testHistoryKaiwa', docId), {
-                    feedback: feedbackInput.value
-                });
+                const docRef = doc(db, 'testHistoryKaiwa', docId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    return alert("Tài liệu không tồn tại!");
+                }
+
+                const data = docSnap.data();
+                const answers = [...(data.answers || [])];
+
+                if (answerIndex < 0 || answerIndex >= answers.length) {
+                    return alert("Câu hỏi không hợp lệ!");
+                }
+
+                answers[answerIndex].feedback = feedback || null;
+
+                await updateDoc(docRef, { answers });
+
                 hideFeedbackModal();
                 loadHistory();
-                alert('Đã lưu phản hồi thành công!');
+                alert('Lưu phản hồi thành công!');
             } catch (error) {
-                console.error('Lỗi khi lưu phản hồi:', error);
-                let errorMessage = 'Đã xảy ra lỗi khi lưu phản hồi!';
-                if (error.code === 'permission-denied') {
-                    errorMessage = 'Không có quyền cập nhật dữ liệu. Vui lòng kiểm tra cấu hình Firestore!';
-                } else if (error.code === 'unavailable') {
-                    errorMessage = 'Không thể kết nối với Firestore. Vui lòng kiểm tra mạng!';
-                }
-                alert(errorMessage);
+                console.error("Lỗi lưu phản hồi:", error);
+                alert("Lỗi khi lưu phản hồi: " + error.message);
             }
         }
 
-        // Initialize event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterDate = document.getElementById('filter-date');
-            const filterClass = document.getElementById('filter-class');
-            const filterName = document.getElementById('filter-name');
-            const filterLesson = document.getElementById('filter-lesson');
-            const deleteBtn = document.getElementById('delete-btn');
-            const cancelBtn = document.getElementById('cancel-btn');
-            const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-            const selectAll = document.getElementById('select-all');
-            const feedbackCancelBtn = document.getElementById('feedback-cancel-btn');
-            const feedbackSaveBtn = document.getElementById('feedback-save-btn');
-
-            if (filterDate) filterDate.addEventListener('change', loadHistory);
-            if (filterClass) filterClass.addEventListener('input', loadHistory);
-            if (filterName) filterName.addEventListener('input', loadHistory);
-            if (filterLesson) filterLesson.addEventListener('change', loadHistory);
-            if (deleteBtn) deleteBtn.addEventListener('click', showPasswordModal);
-            if (cancelBtn) cancelBtn.addEventListener('click', hidePasswordModal);
-            if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', deleteHistory);
-            if (selectAll) selectAll.addEventListener('change', handleSelectAll);
-            if (feedbackCancelBtn) feedbackCancelBtn.addEventListener('click', hideFeedbackModal);
-            if (feedbackSaveBtn) feedbackSaveBtn.addEventListener('click', saveFeedback);
-
-            document.addEventListener('change', function(e) {
-                if (e.target.classList.contains('row-checkbox')) {
-                    updateSelectAllCheckbox();
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            ['filter-date', 'filter-lesson'].forEach(id => {
+                document.getElementById(id).addEventListener('change', loadHistory);
+            });
+            ['filter-class', 'filter-name'].forEach(id => {
+                document.getElementById(id).addEventListener('input', loadHistory);
             });
 
-            document.addEventListener('click', function(e) {
+            document.getElementById('delete-btn').addEventListener('click', showPasswordModal);
+            document.getElementById('cancel-btn').addEventListener('click', hidePasswordModal);
+            document.getElementById('confirm-delete-btn').addEventListener('click', deleteHistory);
+            document.getElementById('select-all').addEventListener('change', handleSelectAll);
+            document.getElementById('feedback-cancel-btn').addEventListener('click', hideFeedbackModal);
+            document.getElementById('feedback-save-btn').addEventListener('click', saveFeedback);
+
+            document.addEventListener('change', e => {
+                if (e.target.classList.contains('row-checkbox')) updateSelectAllCheckbox();
+            });
+
+            document.addEventListener('click', e => {
                 if (e.target.classList.contains('feedback-btn')) {
                     const docId = e.target.dataset.id;
-                    const feedback = e.target.parentElement.textContent.replace('Sửa', '').trim();
-                    showFeedbackModal(docId, feedback === 'Chưa có phản hồi' ? '' : feedback);
+                    const index = parseInt(e.target.dataset.index);
+                    const feedbackText = e.target.previousElementSibling.getAttribute('title') || e.target.previousElementSibling.textContent.trim();
+                    showFeedbackModal(docId, index, feedbackText);
                 }
             });
 
